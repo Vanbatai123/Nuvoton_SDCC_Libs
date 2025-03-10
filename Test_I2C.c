@@ -16,12 +16,12 @@ const uint8_t NumberOfFields = 7;
 /* khai báo các biến thời gian */
 int second, minute, hour, day, wday, month, year;
 
-void readDS1307();
+void readDS1307(void);
 /* Chuyển từ format BCD (Binary-Coded Decimal) sang Decimal */
 int bcd2dec(uint8_t num);
 /* Chuyển từ Decimal sang BCD */
 int dec2bcd(uint8_t num);
-void digitalClockDisplay();
+void digitalClockDisplay(void);
 void printDigits(int digits);
 /* cài đặt thời gian cho DS1307 */
 void setTime(uint8_t hr, uint8_t min, uint8_t sec, uint8_t wd, uint8_t d, uint8_t mth, uint8_t yr);
@@ -43,7 +43,7 @@ void main(void)
     }
 }
 
-void readDS1307()
+void readDS1307(void)
 {
     I2C_beginTransmission(DS1307);
     I2C_write((uint8_t)0x00);
@@ -71,7 +71,7 @@ int dec2bcd(uint8_t num)
     return ((num / 10 * 16) + (num % 10));
 }
 
-void digitalClockDisplay()
+void digitalClockDisplay(void)
 {
     // digital clock display of the time
     UART0_printNum(hour, DEC);

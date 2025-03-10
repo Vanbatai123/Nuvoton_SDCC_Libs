@@ -92,7 +92,7 @@ uint16_t SPI_transfer16(uint16_t data);
 void SPI_transferBuf(void *buf, uint16_t count);
 
 /// @brief 
-void SPI_end();
+void SPI_end(void);
 
 
 /// @brief set bit order of SPI line
@@ -108,10 +108,10 @@ void SPI_setDataMode(uint8_t dataMode);
 void SPI_setClockDivider(uint8_t clockDiv);
 
 /// @brief 
-void SPI_attachInterrupt();
+void SPI_attachInterrupt(void);
 
 /// @brief 
-void SPI_detachInterrupt();
+void SPI_detachInterrupt(void);
 
 
 #endif

@@ -414,7 +414,7 @@ Header file for Nuvoton N76E003
 #define DIV         1
 #define I2TOF       
 // 0XC0    I2CON
-#define I2CEN       
+#define I2CEN       6
 #define STA         5
 #define STO         4
 #define SI          3

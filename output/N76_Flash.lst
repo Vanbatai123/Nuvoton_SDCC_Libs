@@ -1,6 +1,6 @@
                                       1 ;--------------------------------------------------------
-                                      2 ; File Created by SDCC : free open source ANSI-C Compiler
-                                      3 ; Version 4.2.0 #13081 (Linux)
+                                      2 ; File Created by SDCC : free open source ISO C Compiler 
+                                      3 ; Version 4.4.0 #14620 (Linux)
                                       4 ;--------------------------------------------------------
                                       5 	.module N76_Flash
                                       6 	.optsdcc -mmcs51 --model-small
@@ -331,7 +331,7 @@
                                     331 ;--------------------------------------------------------
                                     332 	.area PSEG    (PAG,XDATA)
                                     333 ;--------------------------------------------------------
-                                    334 ; external ram data
+                                    334 ; uninitialized external ram data
                                     335 ;--------------------------------------------------------
                                     336 	.area XSEG    (XDATA)
                                     337 ;--------------------------------------------------------
@@ -339,7 +339,7 @@
                                     339 ;--------------------------------------------------------
                                     340 	.area XABS    (ABS,XDATA)
                                     341 ;--------------------------------------------------------
-                                    342 ; external initialized ram data
+                                    342 ; initialized external ram data
                                     343 ;--------------------------------------------------------
                                     344 	.area XISEG   (XDATA)
                                     345 	.area HOME    (CODE)
@@ -428,8 +428,8 @@
                                     428 ;	 function APROM_write_byte
                                     429 ;	-----------------------------------------
       000010                        430 _APROM_write_byte:
-      000010 AE 82            [24]  431 	mov	r6,dpl
-      000012 AF 83            [24]  432 	mov	r7,dph
+      000010 AE 82            [24]  431 	mov	r6, dpl
+      000012 AF 83            [24]  432 	mov	r7, dph
                                     433 ;	./src/N76_Flash.c:30: set_IAPEN; // enable IAP
       000014 53 A8 7F         [24]  434 	anl	_ie,#0x7f
       000017 75 C7 AA         [24]  435 	mov	_ta,#0xaa
@@ -446,7 +446,7 @@
       000032 75 AF 21         [24]  446 	mov	_iapcn,#0x21
                                     447 ;	./src/N76_Flash.c:34: IAPAH = (uint8_t)((addr) >> 8);
       000035 8F A7            [24]  448 	mov	_iapah,r7
-                                    449 ;	./src/N76_Flash.c:35: IAPAL = (uint8_t)((addr)&0xFF);
+                                    449 ;	./src/N76_Flash.c:35: IAPAL = (uint8_t)((addr) & 0xFF);
       000037 8E A6            [24]  450 	mov	_iapal,r6
                                     451 ;	./src/N76_Flash.c:36: IAPFD = data;
       000039 85*00 AE         [24]  452 	mov	_iapfd,_APROM_write_byte_PARM_2
@@ -480,19 +480,19 @@
                                     480 ;	 function Erase_APROM
                                     481 ;	-----------------------------------------
       00006A                        482 _Erase_APROM:
-      00006A AE 82            [24]  483 	mov	r6,dpl
-      00006C AF 83            [24]  484 	mov	r7,dph
-                                    485 ;	./src/N76_Flash.c:47: set_IAPEN; 					// enable IAP
+      00006A AE 82            [24]  483 	mov	r6, dpl
+      00006C AF 83            [24]  484 	mov	r7, dph
+                                    485 ;	./src/N76_Flash.c:47: set_IAPEN;    // enable IAP
       00006E 53 A8 7F         [24]  486 	anl	_ie,#0x7f
       000071 75 C7 AA         [24]  487 	mov	_ta,#0xaa
       000074 75 C7 55         [24]  488 	mov	_ta,#0x55
       000077 43 9F 01         [24]  489 	orl	_chpcon,#0x01
       00007A 43 A8 80         [24]  490 	orl	_ie,#0x80
-                                    491 ;	./src/N76_Flash.c:48: IAPFD = 0xFF;				// IMPORTANT !! To erase function must setting IAPFD = 0xFF 
+                                    491 ;	./src/N76_Flash.c:48: IAPFD = 0xFF; // IMPORTANT !! To erase function must setting IAPFD = 0xFF
       00007D 75 AE FF         [24]  492 	mov	_iapfd,#0xff
                                     493 ;	./src/N76_Flash.c:49: IAPCN = PAGE_ERASE_AP;
       000080 75 AF 22         [24]  494 	mov	_iapcn,#0x22
-                                    495 ;	./src/N76_Flash.c:50: set_APUEN;			 		// enable IAP updated
+                                    495 ;	./src/N76_Flash.c:50: set_APUEN; // enable IAP updated
       000083 53 A8 7F         [24]  496 	anl	_ie,#0x7f
       000086 75 C7 AA         [24]  497 	mov	_ta,#0xaa
       000089 75 C7 55         [24]  498 	mov	_ta,#0x55
@@ -502,7 +502,7 @@
       000092 8F A7            [24]  502 	mov	_iapah,r7
                                     503 ;	./src/N76_Flash.c:53: IAPAL = (uint8_t)((addr) & 0xFF);
       000094 8E A6            [24]  504 	mov	_iapal,r6
-                                    505 ;	./src/N76_Flash.c:55: set_IAPGO;					// Trigger_IAP();
+                                    505 ;	./src/N76_Flash.c:55: set_IAPGO; // Trigger_IAP();
       000096 53 A8 7F         [24]  506 	anl	_ie,#0x7f
       000099 75 C7 AA         [24]  507 	mov	_ta,#0xaa
       00009C 75 C7 55         [24]  508 	mov	_ta,#0x55

@@ -1,6 +1,6 @@
                                       1 ;--------------------------------------------------------
-                                      2 ; File Created by SDCC : free open source ANSI-C Compiler
-                                      3 ; Version 4.2.0 #13081 (Linux)
+                                      2 ; File Created by SDCC : free open source ISO C Compiler 
+                                      3 ; Version 4.4.0 #14620 (Linux)
                                       4 ;--------------------------------------------------------
                                       5 	.module N76_W25Qxx
                                       6 	.optsdcc -mmcs51 --model-small
@@ -329,24 +329,24 @@
                                     329 ; internal ram data
                                     330 ;--------------------------------------------------------
                                     331 	.area DSEG    (DATA)
-      000017                        332 _W25Qxx_readMidDid_PARM_2:
-      000017                        333 	.ds 3
-      00001A                        334 _W25Qxx_eraseSectorBlock_PARM_2:
-      00001A                        335 	.ds 2
-      00001C                        336 _W25Qxx_eraseSectorBlock_cmd_65536_48:
-      00001C                        337 	.ds 1
-      00001D                        338 _W25Qxx_writePage_PARM_2:
-      00001D                        339 	.ds 3
-      000020                        340 _W25Qxx_writeBuff_PARM_2:
-      000020                        341 	.ds 3
-      000023                        342 _W25Qxx_writeBuff_PARM_3:
-      000023                        343 	.ds 2
-      000025                        344 _W25Qxx_readPage_PARM_2:
-      000025                        345 	.ds 3
-      000028                        346 _W25Qxx_readBuff_PARM_2:
-      000028                        347 	.ds 3
-      00002B                        348 _W25Qxx_readBuff_PARM_3:
-      00002B                        349 	.ds 4
+      00002F                        332 _W25Qxx_readMidDid_PARM_2:
+      00002F                        333 	.ds 3
+      000032                        334 _W25Qxx_eraseSectorBlock_PARM_2:
+      000032                        335 	.ds 2
+      000034                        336 _W25Qxx_eraseSectorBlock_cmd_10000_56:
+      000034                        337 	.ds 1
+      000035                        338 _W25Qxx_writePage_PARM_2:
+      000035                        339 	.ds 3
+      000038                        340 _W25Qxx_writeBuff_PARM_2:
+      000038                        341 	.ds 3
+      00003B                        342 _W25Qxx_writeBuff_PARM_3:
+      00003B                        343 	.ds 2
+      00003D                        344 _W25Qxx_readPage_PARM_2:
+      00003D                        345 	.ds 3
+      000040                        346 _W25Qxx_readBuff_PARM_2:
+      000040                        347 	.ds 3
+      000043                        348 _W25Qxx_readBuff_PARM_3:
+      000043                        349 	.ds 4
                                     350 ;--------------------------------------------------------
                                     351 ; overlayable items in internal ram
                                     352 ;--------------------------------------------------------
@@ -368,7 +368,7 @@
                                     368 ;--------------------------------------------------------
                                     369 	.area PSEG    (PAG,XDATA)
                                     370 ;--------------------------------------------------------
-                                    371 ; external ram data
+                                    371 ; uninitialized external ram data
                                     372 ;--------------------------------------------------------
                                     373 	.area XSEG    (XDATA)
                                     374 ;--------------------------------------------------------
@@ -376,7 +376,7 @@
                                     376 ;--------------------------------------------------------
                                     377 	.area XABS    (ABS,XDATA)
                                     378 ;--------------------------------------------------------
-                                    379 ; external initialized ram data
+                                    379 ; initialized external ram data
                                     380 ;--------------------------------------------------------
                                     381 	.area XISEG   (XDATA)
                                     382 	.area HOME    (CODE)
@@ -412,7 +412,7 @@
                                     412 ;	-----------------------------------------
                                     413 ;	 function SPI_Error
                                     414 ;	-----------------------------------------
-      0008D9                        415 _SPI_Error:
+      000B80                        415 _SPI_Error:
                            000007   416 	ar7 = 0x07
                            000006   417 	ar6 = 0x06
                            000005   418 	ar5 = 0x05
@@ -422,13 +422,13 @@
                            000001   422 	ar1 = 0x01
                            000000   423 	ar0 = 0x00
                                     424 ;	./src/N76_W25Qxx.c:15: UART0_println("\n*  SPI Error, please check the connection between MCU and SPI Flash");
-      0008D9 90 10 93         [24]  425 	mov	dptr,#___str_0
-      0008DC 75 F0 80         [24]  426 	mov	b,#0x80
-      0008DF 12 06 63         [24]  427 	lcall	_UART0_println
+      000B80 90 12 EF         [24]  425 	mov	dptr,#___str_0
+      000B83 75 F0 80         [24]  426 	mov	b, #0x80
+      000B86 12 08 4B         [24]  427 	lcall	_UART0_println
                                     428 ;	./src/N76_W25Qxx.c:16: while (1)
-      0008E2                        429 00102$:
+      000B89                        429 00102$:
                                     430 ;	./src/N76_W25Qxx.c:18: }
-      0008E2 80 FE            [24]  431 	sjmp	00102$
+      000B89 80 FE            [24]  431 	sjmp	00102$
                                     432 ;------------------------------------------------------------
                                     433 ;Allocation info for local variables in function 'W25Qxx_begin'
                                     434 ;------------------------------------------------------------
@@ -436,20 +436,20 @@
                                     436 ;	-----------------------------------------
                                     437 ;	 function W25Qxx_begin
                                     438 ;	-----------------------------------------
-      0008E4                        439 _W25Qxx_begin:
+      000B8B                        439 _W25Qxx_begin:
                                     440 ;	./src/N76_W25Qxx.c:22: SPI_begin(SPI_MODE_MASTER);
-      0008E4 75 82 00         [24]  441 	mov	dpl,#0x00
-      0008E7 12 05 85         [24]  442 	lcall	_SPI_begin
+      000B8B 75 82 00         [24]  441 	mov	dpl, #0x00
+      000B8E 12 07 6D         [24]  442 	lcall	_SPI_begin
                                     443 ;	./src/N76_W25Qxx.c:23: SPI_setBitOrder(MSBFIRST);
-      0008EA 75 82 01         [24]  444 	mov	dpl,#0x01
-      0008ED 12 05 C2         [24]  445 	lcall	_SPI_setBitOrder
+      000B91 75 82 01         [24]  444 	mov	dpl, #0x01
+      000B94 12 07 AA         [24]  445 	lcall	_SPI_setBitOrder
                                     446 ;	./src/N76_W25Qxx.c:24: SPI_setDataMode(SPI_MODE0);
-      0008F0 75 82 00         [24]  447 	mov	dpl,#0x00
-      0008F3 12 05 CE         [24]  448 	lcall	_SPI_setDataMode
+      000B97 75 82 00         [24]  447 	mov	dpl, #0x00
+      000B9A 12 07 B6         [24]  448 	lcall	_SPI_setDataMode
                                     449 ;	./src/N76_W25Qxx.c:25: SPI_setClockDivider(SPI_CLOCK_DIV2);
-      0008F6 75 82 00         [24]  450 	mov	dpl,#0x00
+      000B9D 75 82 00         [24]  450 	mov	dpl, #0x00
                                     451 ;	./src/N76_W25Qxx.c:27: }
-      0008F9 02 05 D8         [24]  452 	ljmp	_SPI_setClockDivider
+      000BA0 02 07 C0         [24]  452 	ljmp	_SPI_setClockDivider
                                     453 ;------------------------------------------------------------
                                     454 ;Allocation info for local variables in function 'W25Qxx_writeCmd'
                                     455 ;------------------------------------------------------------
@@ -460,25 +460,25 @@
                                     460 ;	-----------------------------------------
                                     461 ;	 function W25Qxx_writeCmd
                                     462 ;	-----------------------------------------
-      0008FC                        463 _W25Qxx_writeCmd:
+      000BA3                        463 _W25Qxx_writeCmd:
                                     464 ;	./src/N76_W25Qxx.c:33: clrb(SPI_Px_SS, SPI_PIN_SS);
-      0008FC 53 90 FD         [24]  465 	anl	_p1,#0xfd
+      000BA3 53 90 FD         [24]  465 	anl	_p1,#0xfd
                                     466 ;	./src/N76_W25Qxx.c:34: status = SPI_transfer(cmd); // RESUME komutunu gönder
-      0008FF 12 05 AF         [24]  467 	lcall	_SPI_transfer
-      000902 AF 82            [24]  468 	mov	r7,dpl
+      000BA6 12 07 97         [24]  467 	lcall	_SPI_transfer
+      000BA9 AF 82            [24]  468 	mov	r7, dpl
                                     469 ;	./src/N76_W25Qxx.c:35: setb(SPI_Px_SS, SPI_PIN_SS);
-      000904 43 90 02         [24]  470 	orl	_p1,#0x02
+      000BAB 43 90 02         [24]  470 	orl	_p1,#0x02
                                     471 ;	./src/N76_W25Qxx.c:37: if (status == W25Qxx_OK)
-      000907 EF               [12]  472 	mov	a,r7
-      000908 70 04            [24]  473 	jnz	00102$
+      000BAE EF               [12]  472 	mov	a,r7
+      000BAF 70 04            [24]  473 	jnz	00102$
                                     474 ;	./src/N76_W25Qxx.c:38: return 1;
-      00090A 75 82 01         [24]  475 	mov	dpl,#0x01
-      00090D 22               [24]  476 	ret
-      00090E                        477 00102$:
+      000BB1 75 82 01         [24]  475 	mov	dpl, #0x01
+      000BB4 22               [24]  476 	ret
+      000BB5                        477 00102$:
                                     478 ;	./src/N76_W25Qxx.c:40: return 0;
-      00090E 75 82 00         [24]  479 	mov	dpl,#0x00
+      000BB5 75 82 00         [24]  479 	mov	dpl, #0x00
                                     480 ;	./src/N76_W25Qxx.c:41: }
-      000911 22               [24]  481 	ret
+      000BB8 22               [24]  481 	ret
                                     482 ;------------------------------------------------------------
                                     483 ;Allocation info for local variables in function 'W25Qxx_writeAddr'
                                     484 ;------------------------------------------------------------
@@ -488,33 +488,33 @@
                                     488 ;	-----------------------------------------
                                     489 ;	 function W25Qxx_writeAddr
                                     490 ;	-----------------------------------------
-      000912                        491 _W25Qxx_writeAddr:
-      000912 AC 82            [24]  492 	mov	r4,dpl
-      000914 AD 83            [24]  493 	mov	r5,dph
-      000916 AE F0            [24]  494 	mov	r6,b
-      000918 FF               [12]  495 	mov	r7,a
+      000BB9                        491 _W25Qxx_writeAddr:
+      000BB9 AC 82            [24]  492 	mov	r4,dpl
+      000BBB AD 83            [24]  493 	mov	r5,dph
+      000BBD AE F0            [24]  494 	mov	r6,b
+      000BBF FF               [12]  495 	mov	r7,a
                                     496 ;	./src/N76_W25Qxx.c:45: SPI_transfer((uint8_t)((addr >> 16) & 0xFF));
-      000919 8E 82            [24]  497 	mov	dpl,r6
-      00091B C0 07            [24]  498 	push	ar7
-      00091D C0 06            [24]  499 	push	ar6
-      00091F C0 05            [24]  500 	push	ar5
-      000921 C0 04            [24]  501 	push	ar4
-      000923 12 05 AF         [24]  502 	lcall	_SPI_transfer
-      000926 D0 04            [24]  503 	pop	ar4
-      000928 D0 05            [24]  504 	pop	ar5
+      000BC0 8E 82            [24]  497 	mov	dpl,r6
+      000BC2 C0 07            [24]  498 	push	ar7
+      000BC4 C0 06            [24]  499 	push	ar6
+      000BC6 C0 05            [24]  500 	push	ar5
+      000BC8 C0 04            [24]  501 	push	ar4
+      000BCA 12 07 97         [24]  502 	lcall	_SPI_transfer
+      000BCD D0 04            [24]  503 	pop	ar4
+      000BCF D0 05            [24]  504 	pop	ar5
                                     505 ;	./src/N76_W25Qxx.c:46: SPI_transfer((uint8_t)((addr >> 8) & 0xFF));
-      00092A 8D 82            [24]  506 	mov	dpl,r5
-      00092C C0 05            [24]  507 	push	ar5
-      00092E C0 04            [24]  508 	push	ar4
-      000930 12 05 AF         [24]  509 	lcall	_SPI_transfer
-      000933 D0 04            [24]  510 	pop	ar4
-      000935 D0 05            [24]  511 	pop	ar5
-      000937 D0 06            [24]  512 	pop	ar6
-      000939 D0 07            [24]  513 	pop	ar7
+      000BD1 8D 82            [24]  506 	mov	dpl,r5
+      000BD3 C0 05            [24]  507 	push	ar5
+      000BD5 C0 04            [24]  508 	push	ar4
+      000BD7 12 07 97         [24]  509 	lcall	_SPI_transfer
+      000BDA D0 04            [24]  510 	pop	ar4
+      000BDC D0 05            [24]  511 	pop	ar5
+      000BDE D0 06            [24]  512 	pop	ar6
+      000BE0 D0 07            [24]  513 	pop	ar7
                                     514 ;	./src/N76_W25Qxx.c:47: SPI_transfer((uint8_t)(addr & 0xFF));
-      00093B 8C 82            [24]  515 	mov	dpl,r4
+      000BE2 8C 82            [24]  515 	mov	dpl,r4
                                     516 ;	./src/N76_W25Qxx.c:48: }
-      00093D 02 05 AF         [24]  517 	ljmp	_SPI_transfer
+      000BE4 02 07 97         [24]  517 	ljmp	_SPI_transfer
                                     518 ;------------------------------------------------------------
                                     519 ;Allocation info for local variables in function 'W25Qxx_readMidDid'
                                     520 ;------------------------------------------------------------
@@ -525,61 +525,61 @@
                                     525 ;	-----------------------------------------
                                     526 ;	 function W25Qxx_readMidDid
                                     527 ;	-----------------------------------------
-      000940                        528 _W25Qxx_readMidDid:
-      000940 AD 82            [24]  529 	mov	r5,dpl
-      000942 AE 83            [24]  530 	mov	r6,dph
-      000944 AF F0            [24]  531 	mov	r7,b
+      000BE7                        528 _W25Qxx_readMidDid:
+      000BE7 AD 82            [24]  529 	mov	r5, dpl
+      000BE9 AE 83            [24]  530 	mov	r6, dph
+      000BEB AF F0            [24]  531 	mov	r7, b
                                     532 ;	./src/N76_W25Qxx.c:52: clrb(SPI_Px_SS, SPI_PIN_SS);
-      000946 53 90 FD         [24]  533 	anl	_p1,#0xfd
+      000BED 53 90 FD         [24]  533 	anl	_p1,#0xfd
                                     534 ;	./src/N76_W25Qxx.c:53: SPI_transfer(W25Q_CMD_READ_MANUFACTURER);
-      000949 75 82 90         [24]  535 	mov	dpl,#0x90
-      00094C C0 07            [24]  536 	push	ar7
-      00094E C0 06            [24]  537 	push	ar6
-      000950 C0 05            [24]  538 	push	ar5
-      000952 12 05 AF         [24]  539 	lcall	_SPI_transfer
+      000BF0 75 82 90         [24]  535 	mov	dpl, #0x90
+      000BF3 C0 07            [24]  536 	push	ar7
+      000BF5 C0 06            [24]  537 	push	ar6
+      000BF7 C0 05            [24]  538 	push	ar5
+      000BF9 12 07 97         [24]  539 	lcall	_SPI_transfer
                                     540 ;	./src/N76_W25Qxx.c:54: SPI_transfer(0x00);
-      000955 75 82 00         [24]  541 	mov	dpl,#0x00
-      000958 12 05 AF         [24]  542 	lcall	_SPI_transfer
+      000BFC 75 82 00         [24]  541 	mov	dpl, #0x00
+      000BFF 12 07 97         [24]  542 	lcall	_SPI_transfer
                                     543 ;	./src/N76_W25Qxx.c:55: SPI_transfer(0x00);
-      00095B 75 82 00         [24]  544 	mov	dpl,#0x00
-      00095E 12 05 AF         [24]  545 	lcall	_SPI_transfer
+      000C02 75 82 00         [24]  544 	mov	dpl, #0x00
+      000C05 12 07 97         [24]  545 	lcall	_SPI_transfer
                                     546 ;	./src/N76_W25Qxx.c:56: SPI_transfer(0x00);
-      000961 75 82 00         [24]  547 	mov	dpl,#0x00
-      000964 12 05 AF         [24]  548 	lcall	_SPI_transfer
+      000C08 75 82 00         [24]  547 	mov	dpl, #0x00
+      000C0B 12 07 97         [24]  548 	lcall	_SPI_transfer
                                     549 ;	./src/N76_W25Qxx.c:57: *MFID = SPI_transfer(0xFF);
-      000967 75 82 FF         [24]  550 	mov	dpl,#0xff
-      00096A 12 05 AF         [24]  551 	lcall	_SPI_transfer
-      00096D AC 82            [24]  552 	mov	r4,dpl
-      00096F D0 05            [24]  553 	pop	ar5
-      000971 D0 06            [24]  554 	pop	ar6
-      000973 D0 07            [24]  555 	pop	ar7
-      000975 8D 82            [24]  556 	mov	dpl,r5
-      000977 8E 83            [24]  557 	mov	dph,r6
-      000979 8F F0            [24]  558 	mov	b,r7
-      00097B EC               [12]  559 	mov	a,r4
-      00097C 12 0E 15         [24]  560 	lcall	__gptrput
+      000C0E 75 82 FF         [24]  550 	mov	dpl, #0xff
+      000C11 12 07 97         [24]  551 	lcall	_SPI_transfer
+      000C14 AC 82            [24]  552 	mov	r4, dpl
+      000C16 D0 05            [24]  553 	pop	ar5
+      000C18 D0 06            [24]  554 	pop	ar6
+      000C1A D0 07            [24]  555 	pop	ar7
+      000C1C 8D 82            [24]  556 	mov	dpl,r5
+      000C1E 8E 83            [24]  557 	mov	dph,r6
+      000C20 8F F0            [24]  558 	mov	b,r7
+      000C22 EC               [12]  559 	mov	a,r4
+      000C23 12 10 BA         [24]  560 	lcall	__gptrput
                                     561 ;	./src/N76_W25Qxx.c:58: *DID = SPI_transfer(0xFF);
-      00097F AD 17            [24]  562 	mov	r5,_W25Qxx_readMidDid_PARM_2
-      000981 AE 18            [24]  563 	mov	r6,(_W25Qxx_readMidDid_PARM_2 + 1)
-      000983 AF 19            [24]  564 	mov	r7,(_W25Qxx_readMidDid_PARM_2 + 2)
-      000985 75 82 FF         [24]  565 	mov	dpl,#0xff
-      000988 C0 07            [24]  566 	push	ar7
-      00098A C0 06            [24]  567 	push	ar6
-      00098C C0 05            [24]  568 	push	ar5
-      00098E 12 05 AF         [24]  569 	lcall	_SPI_transfer
-      000991 AC 82            [24]  570 	mov	r4,dpl
-      000993 D0 05            [24]  571 	pop	ar5
-      000995 D0 06            [24]  572 	pop	ar6
-      000997 D0 07            [24]  573 	pop	ar7
-      000999 8D 82            [24]  574 	mov	dpl,r5
-      00099B 8E 83            [24]  575 	mov	dph,r6
-      00099D 8F F0            [24]  576 	mov	b,r7
-      00099F EC               [12]  577 	mov	a,r4
-      0009A0 12 0E 15         [24]  578 	lcall	__gptrput
+      000C26 AD 2F            [24]  562 	mov	r5,_W25Qxx_readMidDid_PARM_2
+      000C28 AE 30            [24]  563 	mov	r6,(_W25Qxx_readMidDid_PARM_2 + 1)
+      000C2A AF 31            [24]  564 	mov	r7,(_W25Qxx_readMidDid_PARM_2 + 2)
+      000C2C 75 82 FF         [24]  565 	mov	dpl, #0xff
+      000C2F C0 07            [24]  566 	push	ar7
+      000C31 C0 06            [24]  567 	push	ar6
+      000C33 C0 05            [24]  568 	push	ar5
+      000C35 12 07 97         [24]  569 	lcall	_SPI_transfer
+      000C38 AC 82            [24]  570 	mov	r4, dpl
+      000C3A D0 05            [24]  571 	pop	ar5
+      000C3C D0 06            [24]  572 	pop	ar6
+      000C3E D0 07            [24]  573 	pop	ar7
+      000C40 8D 82            [24]  574 	mov	dpl,r5
+      000C42 8E 83            [24]  575 	mov	dph,r6
+      000C44 8F F0            [24]  576 	mov	b,r7
+      000C46 EC               [12]  577 	mov	a,r4
+      000C47 12 10 BA         [24]  578 	lcall	__gptrput
                                     579 ;	./src/N76_W25Qxx.c:59: setb(SPI_Px_SS, SPI_PIN_SS);
-      0009A3 43 90 02         [24]  580 	orl	_p1,#0x02
+      000C4A 43 90 02         [24]  580 	orl	_p1,#0x02
                                     581 ;	./src/N76_W25Qxx.c:60: }
-      0009A6 22               [24]  582 	ret
+      000C4D 22               [24]  582 	ret
                                     583 ;------------------------------------------------------------
                                     584 ;Allocation info for local variables in function 'W25Qxx_writeEnable'
                                     585 ;------------------------------------------------------------
@@ -587,11 +587,11 @@
                                     587 ;	-----------------------------------------
                                     588 ;	 function W25Qxx_writeEnable
                                     589 ;	-----------------------------------------
-      0009A7                        590 _W25Qxx_writeEnable:
+      000C4E                        590 _W25Qxx_writeEnable:
                                     591 ;	./src/N76_W25Qxx.c:64: W25Qxx_writeCmd(W25Q_CMD_WRITE_ENABLE);
-      0009A7 75 82 06         [24]  592 	mov	dpl,#0x06
+      000C4E 75 82 06         [24]  592 	mov	dpl, #0x06
                                     593 ;	./src/N76_W25Qxx.c:65: }
-      0009AA 02 08 FC         [24]  594 	ljmp	_W25Qxx_writeCmd
+      000C51 02 0B A3         [24]  594 	ljmp	_W25Qxx_writeCmd
                                     595 ;------------------------------------------------------------
                                     596 ;Allocation info for local variables in function 'W25Qxx_writeDisable'
                                     597 ;------------------------------------------------------------
@@ -599,11 +599,11 @@
                                     599 ;	-----------------------------------------
                                     600 ;	 function W25Qxx_writeDisable
                                     601 ;	-----------------------------------------
-      0009AD                        602 _W25Qxx_writeDisable:
+      000C54                        602 _W25Qxx_writeDisable:
                                     603 ;	./src/N76_W25Qxx.c:69: W25Qxx_writeCmd(W25Q_CMD_WRITE_DISABLE);
-      0009AD 75 82 04         [24]  604 	mov	dpl,#0x04
+      000C54 75 82 04         [24]  604 	mov	dpl, #0x04
                                     605 ;	./src/N76_W25Qxx.c:70: }
-      0009B0 02 08 FC         [24]  606 	ljmp	_W25Qxx_writeCmd
+      000C57 02 0B A3         [24]  606 	ljmp	_W25Qxx_writeCmd
                                     607 ;------------------------------------------------------------
                                     608 ;Allocation info for local variables in function 'W25Qxx_eraseChip'
                                     609 ;------------------------------------------------------------
@@ -611,672 +611,671 @@
                                     611 ;	-----------------------------------------
                                     612 ;	 function W25Qxx_eraseChip
                                     613 ;	-----------------------------------------
-      0009B3                        614 _W25Qxx_eraseChip:
+      000C5A                        614 _W25Qxx_eraseChip:
                                     615 ;	./src/N76_W25Qxx.c:74: W25Qxx_writeEnable();
-      0009B3 12 09 A7         [24]  616 	lcall	_W25Qxx_writeEnable
+      000C5A 12 0C 4E         [24]  616 	lcall	_W25Qxx_writeEnable
                                     617 ;	./src/N76_W25Qxx.c:75: W25Qxx_writeCmd(W25Q_CMD_CHIP_ERASE);
-      0009B6 75 82 C7         [24]  618 	mov	dpl,#0xc7
-      0009B9 12 08 FC         [24]  619 	lcall	_W25Qxx_writeCmd
+      000C5D 75 82 C7         [24]  618 	mov	dpl, #0xc7
+      000C60 12 0B A3         [24]  619 	lcall	_W25Qxx_writeCmd
                                     620 ;	./src/N76_W25Qxx.c:76: W25Qxx_waitIdle();
-      0009BC 12 0A 79         [24]  621 	lcall	_W25Qxx_waitIdle
+      000C63 12 0D 1A         [24]  621 	lcall	_W25Qxx_waitIdle
                                     622 ;	./src/N76_W25Qxx.c:77: W25Qxx_writeDisable();
                                     623 ;	./src/N76_W25Qxx.c:78: }
-      0009BF 02 09 AD         [24]  624 	ljmp	_W25Qxx_writeDisable
+      000C66 02 0C 54         [24]  624 	ljmp	_W25Qxx_writeDisable
                                     625 ;------------------------------------------------------------
                                     626 ;Allocation info for local variables in function 'W25Qxx_eraseSectorBlock'
                                     627 ;------------------------------------------------------------
                                     628 ;num                       Allocated with name '_W25Qxx_eraseSectorBlock_PARM_2'
-                                    629 ;cmd                       Allocated with name '_W25Qxx_eraseSectorBlock_cmd_65536_48'
+                                    629 ;cmd                       Allocated with name '_W25Qxx_eraseSectorBlock_cmd_10000_56'
                                     630 ;addr                      Allocated to registers r3 r4 r5 r6 
                                     631 ;------------------------------------------------------------
                                     632 ;	./src/N76_W25Qxx.c:80: uint8_t W25Qxx_eraseSectorBlock(uint8_t cmd, uint16_t num)
                                     633 ;	-----------------------------------------
                                     634 ;	 function W25Qxx_eraseSectorBlock
                                     635 ;	-----------------------------------------
-      0009C2                        636 _W25Qxx_eraseSectorBlock:
-      0009C2 85 82 1C         [24]  637 	mov	_W25Qxx_eraseSectorBlock_cmd_65536_48,dpl
+      000C69                        636 _W25Qxx_eraseSectorBlock:
+      000C69 85 82 34         [24]  637 	mov	_W25Qxx_eraseSectorBlock_cmd_10000_56,dpl
                                     638 ;	./src/N76_W25Qxx.c:82: uint32_t addr = 0;
                                     639 ;	./src/N76_W25Qxx.c:83: if (cmd == W25Q_CMD_SECTOR_ERASE_4K)
-      0009C5 E4               [12]  640 	clr	a
-      0009C6 FB               [12]  641 	mov	r3,a
-      0009C7 FC               [12]  642 	mov	r4,a
-      0009C8 FD               [12]  643 	mov	r5,a
-      0009C9 FE               [12]  644 	mov	r6,a
-      0009CA 74 20            [12]  645 	mov	a,#0x20
-      0009CC B5 1C 1C         [24]  646 	cjne	a,_W25Qxx_eraseSectorBlock_cmd_65536_48,00113$
+      000C6C E4               [12]  640 	clr	a
+      000C6D FB               [12]  641 	mov	r3,a
+      000C6E FC               [12]  642 	mov	r4,a
+      000C6F FD               [12]  643 	mov	r5,a
+      000C70 FE               [12]  644 	mov	r6,a
+      000C71 74 20            [12]  645 	mov	a,#0x20
+      000C73 B5 34 1C         [24]  646 	cjne	a,_W25Qxx_eraseSectorBlock_cmd_10000_56,00113$
                                     647 ;	./src/N76_W25Qxx.c:85: if (num >= SECTOR_SIZE_4K)
-      0009CF 74 FC            [12]  648 	mov	a,#0x100 - 0x04
-      0009D1 25 1B            [12]  649 	add	a,(_W25Qxx_eraseSectorBlock_PARM_2 + 1)
-      0009D3 50 04            [24]  650 	jnc	00102$
+      000C76 74 FC            [12]  648 	mov	a,#0x100 - 0x04
+      000C78 25 33            [12]  649 	add	a,(_W25Qxx_eraseSectorBlock_PARM_2 + 1)
+      000C7A 50 04            [24]  650 	jnc	00102$
                                     651 ;	./src/N76_W25Qxx.c:86: return W25Qxx_ERR_PARAM;
-      0009D5 75 82 02         [24]  652 	mov	dpl,#0x02
-      0009D8 22               [24]  653 	ret
-      0009D9                        654 00102$:
+      000C7C 75 82 02         [24]  652 	mov	dpl, #0x02
+      000C7F 22               [24]  653 	ret
+      000C80                        654 00102$:
                                     655 ;	./src/N76_W25Qxx.c:87: addr = SECTOR_BYTE_4K * num;
-      0009D9 E5 1A            [12]  656 	mov	a,_W25Qxx_eraseSectorBlock_PARM_2
-      0009DB C4               [12]  657 	swap	a
-      0009DC 54 F0            [12]  658 	anl	a,#0xf0
-      0009DE FA               [12]  659 	mov	r2,a
-      0009DF 79 00            [12]  660 	mov	r1,#0x00
-      0009E1 89 03            [24]  661 	mov	ar3,r1
-      0009E3 8A 04            [24]  662 	mov	ar4,r2
-      0009E5 7D 00            [12]  663 	mov	r5,#0x00
-      0009E7 7E 00            [12]  664 	mov	r6,#0x00
-      0009E9 80 5B            [24]  665 	sjmp	00114$
-      0009EB                        666 00113$:
+      000C80 E5 32            [12]  656 	mov	a,_W25Qxx_eraseSectorBlock_PARM_2
+      000C82 C4               [12]  657 	swap	a
+      000C83 54 F0            [12]  658 	anl	a,#0xf0
+      000C85 FA               [12]  659 	mov	r2,a
+      000C86 79 00            [12]  660 	mov	r1,#0x00
+      000C88 89 03            [24]  661 	mov	ar3,r1
+      000C8A 8A 04            [24]  662 	mov	ar4,r2
+      000C8C 7D 00            [12]  663 	mov	r5,#0x00
+      000C8E 7E 00            [12]  664 	mov	r6,#0x00
+      000C90 80 55            [24]  665 	sjmp	00114$
+      000C92                        666 00113$:
                                     667 ;	./src/N76_W25Qxx.c:89: else if (cmd == W25Q_CMD_BLOCK_ERASE_32K)
-      0009EB 74 52            [12]  668 	mov	a,#0x52
-      0009ED B5 1C 32         [24]  669 	cjne	a,_W25Qxx_eraseSectorBlock_cmd_65536_48,00110$
+      000C92 74 52            [12]  668 	mov	a,#0x52
+      000C94 B5 34 30         [24]  669 	cjne	a,_W25Qxx_eraseSectorBlock_cmd_10000_56,00110$
                                     670 ;	./src/N76_W25Qxx.c:91: if (num >= BLOCK_SIZE_32K)
-      0009F0 C3               [12]  671 	clr	c
-      0009F1 E5 1A            [12]  672 	mov	a,_W25Qxx_eraseSectorBlock_PARM_2
-      0009F3 94 80            [12]  673 	subb	a,#0x80
-      0009F5 E5 1B            [12]  674 	mov	a,(_W25Qxx_eraseSectorBlock_PARM_2 + 1)
-      0009F7 94 00            [12]  675 	subb	a,#0x00
-      0009F9 40 04            [24]  676 	jc	00104$
+      000C97 C3               [12]  671 	clr	c
+      000C98 E5 32            [12]  672 	mov	a,_W25Qxx_eraseSectorBlock_PARM_2
+      000C9A 94 80            [12]  673 	subb	a,#0x80
+      000C9C E5 33            [12]  674 	mov	a,(_W25Qxx_eraseSectorBlock_PARM_2 + 1)
+      000C9E 94 00            [12]  675 	subb	a,#0x00
+      000CA0 40 04            [24]  676 	jc	00104$
                                     677 ;	./src/N76_W25Qxx.c:92: return W25Qxx_ERR_PARAM;
-      0009FB 75 82 02         [24]  678 	mov	dpl,#0x02
-      0009FE 22               [24]  679 	ret
-      0009FF                        680 00104$:
+      000CA2 75 82 02         [24]  678 	mov	dpl, #0x02
+      000CA5 22               [24]  679 	ret
+      000CA6                        680 00104$:
                                     681 ;	./src/N76_W25Qxx.c:93: addr = BLOCK_BYTE_32K * num;
-      0009FF A8 1A            [24]  682 	mov	r0,_W25Qxx_eraseSectorBlock_PARM_2
-      000A01 A9 1B            [24]  683 	mov	r1,(_W25Qxx_eraseSectorBlock_PARM_2 + 1)
-      000A03 7A 00            [12]  684 	mov	r2,#0x00
-      000A05 7F 00            [12]  685 	mov	r7,#0x00
-      000A07 89 05            [24]  686 	mov	ar5,r1
-      000A09 EA               [12]  687 	mov	a,r2
-      000A0A 54 01            [12]  688 	anl	a,#0x01
-      000A0C A2 E0            [12]  689 	mov	c,acc.0
-      000A0E CD               [12]  690 	xch	a,r5
-      000A0F 13               [12]  691 	rrc	a
-      000A10 CD               [12]  692 	xch	a,r5
-      000A11 13               [12]  693 	rrc	a
-      000A12 CD               [12]  694 	xch	a,r5
-      000A13 FE               [12]  695 	mov	r6,a
-      000A14 E8               [12]  696 	mov	a,r0
-      000A15 C3               [12]  697 	clr	c
-      000A16 13               [12]  698 	rrc	a
-      000A17 4D               [12]  699 	orl	a,r5
-      000A18 FD               [12]  700 	mov	r5,a
-      000A19 E8               [12]  701 	mov	a,r0
-      000A1A 03               [12]  702 	rr	a
-      000A1B 54 80            [12]  703 	anl	a,#0x80
-      000A1D FC               [12]  704 	mov	r4,a
-      000A1E 7B 00            [12]  705 	mov	r3,#0x00
-      000A20 80 24            [24]  706 	sjmp	00114$
-      000A22                        707 00110$:
-                                    708 ;	./src/N76_W25Qxx.c:95: else if (cmd == W25Q_CMD_BLOCK_ERASE_64K)
-      000A22 74 D8            [12]  709 	mov	a,#0xd8
-      000A24 B5 1C 1F         [24]  710 	cjne	a,_W25Qxx_eraseSectorBlock_cmd_65536_48,00114$
-                                    711 ;	./src/N76_W25Qxx.c:97: if (num >= BLOCK_SIZE_64K)
-      000A27 C3               [12]  712 	clr	c
-      000A28 E5 1A            [12]  713 	mov	a,_W25Qxx_eraseSectorBlock_PARM_2
-      000A2A 94 40            [12]  714 	subb	a,#0x40
-      000A2C E5 1B            [12]  715 	mov	a,(_W25Qxx_eraseSectorBlock_PARM_2 + 1)
-      000A2E 94 00            [12]  716 	subb	a,#0x00
-      000A30 40 04            [24]  717 	jc	00106$
-                                    718 ;	./src/N76_W25Qxx.c:98: return W25Qxx_ERR_PARAM;
-      000A32 75 82 02         [24]  719 	mov	dpl,#0x02
-      000A35 22               [24]  720 	ret
-      000A36                        721 00106$:
-                                    722 ;	./src/N76_W25Qxx.c:99: addr = BLOCK_BYTE_64K * num;
-      000A36 A8 1A            [24]  723 	mov	r0,_W25Qxx_eraseSectorBlock_PARM_2
-      000A38 A9 1B            [24]  724 	mov	r1,(_W25Qxx_eraseSectorBlock_PARM_2 + 1)
-      000A3A 7A 00            [12]  725 	mov	r2,#0x00
-      000A3C 7F 00            [12]  726 	mov	r7,#0x00
-      000A3E 89 06            [24]  727 	mov	ar6,r1
-      000A40 88 05            [24]  728 	mov	ar5,r0
-      000A42 7B 00            [12]  729 	mov	r3,#0x00
-      000A44 7C 00            [12]  730 	mov	r4,#0x00
-      000A46                        731 00114$:
-                                    732 ;	./src/N76_W25Qxx.c:102: W25Qxx_writeEnable();
-      000A46 C0 06            [24]  733 	push	ar6
-      000A48 C0 05            [24]  734 	push	ar5
-      000A4A C0 04            [24]  735 	push	ar4
-      000A4C C0 03            [24]  736 	push	ar3
-      000A4E 12 09 A7         [24]  737 	lcall	_W25Qxx_writeEnable
-                                    738 ;	./src/N76_W25Qxx.c:104: clrb(SPI_Px_SS, SPI_PIN_SS);
-      000A51 53 90 FD         [24]  739 	anl	_p1,#0xfd
-                                    740 ;	./src/N76_W25Qxx.c:106: SPI_transfer(cmd);
-      000A54 85 1C 82         [24]  741 	mov	dpl,_W25Qxx_eraseSectorBlock_cmd_65536_48
-      000A57 12 05 AF         [24]  742 	lcall	_SPI_transfer
-      000A5A D0 03            [24]  743 	pop	ar3
-      000A5C D0 04            [24]  744 	pop	ar4
-      000A5E D0 05            [24]  745 	pop	ar5
-      000A60 D0 06            [24]  746 	pop	ar6
-                                    747 ;	./src/N76_W25Qxx.c:107: W25Qxx_writeAddr(addr);
-      000A62 8B 82            [24]  748 	mov	dpl,r3
-      000A64 8C 83            [24]  749 	mov	dph,r4
-      000A66 8D F0            [24]  750 	mov	b,r5
-      000A68 EE               [12]  751 	mov	a,r6
-      000A69 12 09 12         [24]  752 	lcall	_W25Qxx_writeAddr
-                                    753 ;	./src/N76_W25Qxx.c:109: setb(SPI_Px_SS, SPI_PIN_SS);
-      000A6C 43 90 02         [24]  754 	orl	_p1,#0x02
-                                    755 ;	./src/N76_W25Qxx.c:110: W25Qxx_waitIdle();
-      000A6F 12 0A 79         [24]  756 	lcall	_W25Qxx_waitIdle
-                                    757 ;	./src/N76_W25Qxx.c:111: W25Qxx_writeDisable();
-      000A72 12 09 AD         [24]  758 	lcall	_W25Qxx_writeDisable
-                                    759 ;	./src/N76_W25Qxx.c:113: return W25Qxx_OK;
-      000A75 75 82 00         [24]  760 	mov	dpl,#0x00
-                                    761 ;	./src/N76_W25Qxx.c:114: }
-      000A78 22               [24]  762 	ret
-                                    763 ;------------------------------------------------------------
-                                    764 ;Allocation info for local variables in function 'W25Qxx_waitIdle'
-                                    765 ;------------------------------------------------------------
-                                    766 ;u8Status                  Allocated to registers 
-                                    767 ;------------------------------------------------------------
-                                    768 ;	./src/N76_W25Qxx.c:116: void W25Qxx_waitIdle(void)
-                                    769 ;	-----------------------------------------
-                                    770 ;	 function W25Qxx_waitIdle
-                                    771 ;	-----------------------------------------
-      000A79                        772 _W25Qxx_waitIdle:
-                                    773 ;	./src/N76_W25Qxx.c:120: clrb(SPI_Px_SS, SPI_PIN_SS);
-      000A79 53 90 FD         [24]  774 	anl	_p1,#0xfd
-                                    775 ;	./src/N76_W25Qxx.c:121: do
-      000A7C                        776 00101$:
-                                    777 ;	./src/N76_W25Qxx.c:123: SPI_transfer(W25Q_CMD_READ_STATUS_REG1);
-      000A7C 75 82 05         [24]  778 	mov	dpl,#0x05
-      000A7F 12 05 AF         [24]  779 	lcall	_SPI_transfer
-                                    780 ;	./src/N76_W25Qxx.c:124: u8Status = SPI_transfer(0xFF);
-      000A82 75 82 FF         [24]  781 	mov	dpl,#0xff
-      000A85 12 05 AF         [24]  782 	lcall	_SPI_transfer
-      000A88 E5 82            [12]  783 	mov	a,dpl
-                                    784 ;	./src/N76_W25Qxx.c:125: } while (inbit(u8Status, REG1_BUSY) == 1);
-      000A8A 54 01            [12]  785 	anl	a,#0x01
-      000A8C FF               [12]  786 	mov	r7,a
-      000A8D BF 01 02         [24]  787 	cjne	r7,#0x01,00114$
-      000A90 80 EA            [24]  788 	sjmp	00101$
-      000A92                        789 00114$:
-                                    790 ;	./src/N76_W25Qxx.c:127: setb(SPI_Px_SS, SPI_PIN_SS);
-      000A92 43 90 02         [24]  791 	orl	_p1,#0x02
-                                    792 ;	./src/N76_W25Qxx.c:128: }
-      000A95 22               [24]  793 	ret
-                                    794 ;------------------------------------------------------------
-                                    795 ;Allocation info for local variables in function 'W25Qxx_eraseVerify'
+      000CA6 A8 32            [24]  682 	mov	r0,_W25Qxx_eraseSectorBlock_PARM_2
+      000CA8 A9 33            [24]  683 	mov	r1,(_W25Qxx_eraseSectorBlock_PARM_2 + 1)
+      000CAA 7A 00            [12]  684 	mov	r2,#0x00
+      000CAC 89 05            [24]  685 	mov	ar5,r1
+      000CAE EA               [12]  686 	mov	a,r2
+      000CAF 54 01            [12]  687 	anl	a,#0x01
+      000CB1 A2 E0            [12]  688 	mov	c,acc.0
+      000CB3 CD               [12]  689 	xch	a,r5
+      000CB4 13               [12]  690 	rrc	a
+      000CB5 CD               [12]  691 	xch	a,r5
+      000CB6 13               [12]  692 	rrc	a
+      000CB7 CD               [12]  693 	xch	a,r5
+      000CB8 FE               [12]  694 	mov	r6,a
+      000CB9 E8               [12]  695 	mov	a,r0
+      000CBA C3               [12]  696 	clr	c
+      000CBB 13               [12]  697 	rrc	a
+      000CBC 4D               [12]  698 	orl	a,r5
+      000CBD FD               [12]  699 	mov	r5,a
+      000CBE E8               [12]  700 	mov	a,r0
+      000CBF 03               [12]  701 	rr	a
+      000CC0 54 80            [12]  702 	anl	a,#0x80
+      000CC2 FC               [12]  703 	mov	r4,a
+      000CC3 7B 00            [12]  704 	mov	r3,#0x00
+      000CC5 80 20            [24]  705 	sjmp	00114$
+      000CC7                        706 00110$:
+                                    707 ;	./src/N76_W25Qxx.c:95: else if (cmd == W25Q_CMD_BLOCK_ERASE_64K)
+      000CC7 74 D8            [12]  708 	mov	a,#0xd8
+      000CC9 B5 34 1B         [24]  709 	cjne	a,_W25Qxx_eraseSectorBlock_cmd_10000_56,00114$
+                                    710 ;	./src/N76_W25Qxx.c:97: if (num >= BLOCK_SIZE_64K)
+      000CCC C3               [12]  711 	clr	c
+      000CCD E5 32            [12]  712 	mov	a,_W25Qxx_eraseSectorBlock_PARM_2
+      000CCF 94 40            [12]  713 	subb	a,#0x40
+      000CD1 E5 33            [12]  714 	mov	a,(_W25Qxx_eraseSectorBlock_PARM_2 + 1)
+      000CD3 94 00            [12]  715 	subb	a,#0x00
+      000CD5 40 04            [24]  716 	jc	00106$
+                                    717 ;	./src/N76_W25Qxx.c:98: return W25Qxx_ERR_PARAM;
+      000CD7 75 82 02         [24]  718 	mov	dpl, #0x02
+      000CDA 22               [24]  719 	ret
+      000CDB                        720 00106$:
+                                    721 ;	./src/N76_W25Qxx.c:99: addr = BLOCK_BYTE_64K * num;
+      000CDB A8 32            [24]  722 	mov	r0,_W25Qxx_eraseSectorBlock_PARM_2
+      000CDD A9 33            [24]  723 	mov	r1,(_W25Qxx_eraseSectorBlock_PARM_2 + 1)
+      000CDF 89 06            [24]  724 	mov	ar6,r1
+      000CE1 88 05            [24]  725 	mov	ar5,r0
+      000CE3 7B 00            [12]  726 	mov	r3,#0x00
+      000CE5 7C 00            [12]  727 	mov	r4,#0x00
+      000CE7                        728 00114$:
+                                    729 ;	./src/N76_W25Qxx.c:102: W25Qxx_writeEnable();
+      000CE7 C0 06            [24]  730 	push	ar6
+      000CE9 C0 05            [24]  731 	push	ar5
+      000CEB C0 04            [24]  732 	push	ar4
+      000CED C0 03            [24]  733 	push	ar3
+      000CEF 12 0C 4E         [24]  734 	lcall	_W25Qxx_writeEnable
+                                    735 ;	./src/N76_W25Qxx.c:104: clrb(SPI_Px_SS, SPI_PIN_SS);
+      000CF2 53 90 FD         [24]  736 	anl	_p1,#0xfd
+                                    737 ;	./src/N76_W25Qxx.c:106: SPI_transfer(cmd);
+      000CF5 85 34 82         [24]  738 	mov	dpl, _W25Qxx_eraseSectorBlock_cmd_10000_56
+      000CF8 12 07 97         [24]  739 	lcall	_SPI_transfer
+      000CFB D0 03            [24]  740 	pop	ar3
+      000CFD D0 04            [24]  741 	pop	ar4
+      000CFF D0 05            [24]  742 	pop	ar5
+      000D01 D0 06            [24]  743 	pop	ar6
+                                    744 ;	./src/N76_W25Qxx.c:107: W25Qxx_writeAddr(addr);
+      000D03 8B 82            [24]  745 	mov	dpl, r3
+      000D05 8C 83            [24]  746 	mov	dph, r4
+      000D07 8D F0            [24]  747 	mov	b, r5
+      000D09 EE               [12]  748 	mov	a, r6
+      000D0A 12 0B B9         [24]  749 	lcall	_W25Qxx_writeAddr
+                                    750 ;	./src/N76_W25Qxx.c:109: setb(SPI_Px_SS, SPI_PIN_SS);
+      000D0D 43 90 02         [24]  751 	orl	_p1,#0x02
+                                    752 ;	./src/N76_W25Qxx.c:110: W25Qxx_waitIdle();
+      000D10 12 0D 1A         [24]  753 	lcall	_W25Qxx_waitIdle
+                                    754 ;	./src/N76_W25Qxx.c:111: W25Qxx_writeDisable();
+      000D13 12 0C 54         [24]  755 	lcall	_W25Qxx_writeDisable
+                                    756 ;	./src/N76_W25Qxx.c:113: return W25Qxx_OK;
+      000D16 75 82 00         [24]  757 	mov	dpl, #0x00
+                                    758 ;	./src/N76_W25Qxx.c:114: }
+      000D19 22               [24]  759 	ret
+                                    760 ;------------------------------------------------------------
+                                    761 ;Allocation info for local variables in function 'W25Qxx_waitIdle'
+                                    762 ;------------------------------------------------------------
+                                    763 ;u8Status                  Allocated to registers 
+                                    764 ;------------------------------------------------------------
+                                    765 ;	./src/N76_W25Qxx.c:116: void W25Qxx_waitIdle(void)
+                                    766 ;	-----------------------------------------
+                                    767 ;	 function W25Qxx_waitIdle
+                                    768 ;	-----------------------------------------
+      000D1A                        769 _W25Qxx_waitIdle:
+                                    770 ;	./src/N76_W25Qxx.c:120: clrb(SPI_Px_SS, SPI_PIN_SS);
+      000D1A 53 90 FD         [24]  771 	anl	_p1,#0xfd
+                                    772 ;	./src/N76_W25Qxx.c:121: do
+      000D1D                        773 00101$:
+                                    774 ;	./src/N76_W25Qxx.c:123: SPI_transfer(W25Q_CMD_READ_STATUS_REG1);
+      000D1D 75 82 05         [24]  775 	mov	dpl, #0x05
+      000D20 12 07 97         [24]  776 	lcall	_SPI_transfer
+                                    777 ;	./src/N76_W25Qxx.c:124: u8Status = SPI_transfer(0xFF);
+      000D23 75 82 FF         [24]  778 	mov	dpl, #0xff
+      000D26 12 07 97         [24]  779 	lcall	_SPI_transfer
+      000D29 E5 82            [12]  780 	mov	a, dpl
+                                    781 ;	./src/N76_W25Qxx.c:125: } while (inbit(u8Status, REG1_BUSY) == 1);
+      000D2B 54 01            [12]  782 	anl	a,#0x01
+      000D2D FF               [12]  783 	mov	r7,a
+      000D2E BF 01 02         [24]  784 	cjne	r7,#0x01,00118$
+      000D31 80 EA            [24]  785 	sjmp	00101$
+      000D33                        786 00118$:
+                                    787 ;	./src/N76_W25Qxx.c:127: setb(SPI_Px_SS, SPI_PIN_SS);
+      000D33 43 90 02         [24]  788 	orl	_p1,#0x02
+                                    789 ;	./src/N76_W25Qxx.c:128: }
+      000D36 22               [24]  790 	ret
+                                    791 ;------------------------------------------------------------
+                                    792 ;Allocation info for local variables in function 'W25Qxx_eraseVerify'
+                                    793 ;------------------------------------------------------------
+                                    794 ;i                         Allocated to registers r6 r7 
+                                    795 ;u8Data                    Allocated to registers r5 
                                     796 ;------------------------------------------------------------
-                                    797 ;i                         Allocated to registers r6 r7 
-                                    798 ;u8Data                    Allocated to registers r5 
-                                    799 ;------------------------------------------------------------
-                                    800 ;	./src/N76_W25Qxx.c:130: uint8_t W25Qxx_eraseVerify(void)
-                                    801 ;	-----------------------------------------
-                                    802 ;	 function W25Qxx_eraseVerify
-                                    803 ;	-----------------------------------------
-      000A96                        804 _W25Qxx_eraseVerify:
-                                    805 ;	./src/N76_W25Qxx.c:135: clrb(SPI_Px_SS, SPI_PIN_SS);
-      000A96 53 90 FD         [24]  806 	anl	_p1,#0xfd
-                                    807 ;	./src/N76_W25Qxx.c:137: SPI_transfer(W25Q_CMD_READ_DATA);
-      000A99 75 82 03         [24]  808 	mov	dpl,#0x03
-      000A9C 12 05 AF         [24]  809 	lcall	_SPI_transfer
-                                    810 ;	./src/N76_W25Qxx.c:138: SPI_transfer(0x00);
-      000A9F 75 82 00         [24]  811 	mov	dpl,#0x00
-      000AA2 12 05 AF         [24]  812 	lcall	_SPI_transfer
-                                    813 ;	./src/N76_W25Qxx.c:139: SPI_transfer(0x00);
-      000AA5 75 82 00         [24]  814 	mov	dpl,#0x00
-      000AA8 12 05 AF         [24]  815 	lcall	_SPI_transfer
-                                    816 ;	./src/N76_W25Qxx.c:140: SPI_transfer(0x00);
-      000AAB 75 82 00         [24]  817 	mov	dpl,#0x00
-      000AAE 12 05 AF         [24]  818 	lcall	_SPI_transfer
-                                    819 ;	./src/N76_W25Qxx.c:142: for (i = 0; i < 256; i++)
-      000AB1 7E 00            [12]  820 	mov	r6,#0x00
-      000AB3 7F 00            [12]  821 	mov	r7,#0x00
-      000AB5                        822 00104$:
-                                    823 ;	./src/N76_W25Qxx.c:144: u8Data = SPI_transfer(0x00);
-      000AB5 75 82 00         [24]  824 	mov	dpl,#0x00
-      000AB8 C0 07            [24]  825 	push	ar7
-      000ABA C0 06            [24]  826 	push	ar6
-      000ABC 12 05 AF         [24]  827 	lcall	_SPI_transfer
-      000ABF AD 82            [24]  828 	mov	r5,dpl
-      000AC1 D0 06            [24]  829 	pop	ar6
-      000AC3 D0 07            [24]  830 	pop	ar7
-                                    831 ;	./src/N76_W25Qxx.c:145: if (u8Data != 0xFF)
-      000AC5 BD FF 02         [24]  832 	cjne	r5,#0xff,00120$
-      000AC8 80 04            [24]  833 	sjmp	00105$
-      000ACA                        834 00120$:
-                                    835 ;	./src/N76_W25Qxx.c:147: return W25Qxx_ERR;
-      000ACA 75 82 01         [24]  836 	mov	dpl,#0x01
-      000ACD 22               [24]  837 	ret
-      000ACE                        838 00105$:
-                                    839 ;	./src/N76_W25Qxx.c:142: for (i = 0; i < 256; i++)
-      000ACE 0E               [12]  840 	inc	r6
-      000ACF BE 00 01         [24]  841 	cjne	r6,#0x00,00121$
-      000AD2 0F               [12]  842 	inc	r7
-      000AD3                        843 00121$:
-      000AD3 8F 05            [24]  844 	mov	ar5,r7
-      000AD5 74 FF            [12]  845 	mov	a,#0x100 - 0x01
-      000AD7 2D               [12]  846 	add	a,r5
-      000AD8 50 DB            [24]  847 	jnc	00104$
-                                    848 ;	./src/N76_W25Qxx.c:151: setb(SPI_Px_SS, SPI_PIN_SS);
-      000ADA 43 90 02         [24]  849 	orl	_p1,#0x02
-                                    850 ;	./src/N76_W25Qxx.c:152: return W25Qxx_OK;
-      000ADD 75 82 00         [24]  851 	mov	dpl,#0x00
-                                    852 ;	./src/N76_W25Qxx.c:153: }
-      000AE0 22               [24]  853 	ret
+                                    797 ;	./src/N76_W25Qxx.c:130: uint8_t W25Qxx_eraseVerify(void)
+                                    798 ;	-----------------------------------------
+                                    799 ;	 function W25Qxx_eraseVerify
+                                    800 ;	-----------------------------------------
+      000D37                        801 _W25Qxx_eraseVerify:
+                                    802 ;	./src/N76_W25Qxx.c:135: clrb(SPI_Px_SS, SPI_PIN_SS);
+      000D37 53 90 FD         [24]  803 	anl	_p1,#0xfd
+                                    804 ;	./src/N76_W25Qxx.c:137: SPI_transfer(W25Q_CMD_READ_DATA);
+      000D3A 75 82 03         [24]  805 	mov	dpl, #0x03
+      000D3D 12 07 97         [24]  806 	lcall	_SPI_transfer
+                                    807 ;	./src/N76_W25Qxx.c:138: SPI_transfer(0x00);
+      000D40 75 82 00         [24]  808 	mov	dpl, #0x00
+      000D43 12 07 97         [24]  809 	lcall	_SPI_transfer
+                                    810 ;	./src/N76_W25Qxx.c:139: SPI_transfer(0x00);
+      000D46 75 82 00         [24]  811 	mov	dpl, #0x00
+      000D49 12 07 97         [24]  812 	lcall	_SPI_transfer
+                                    813 ;	./src/N76_W25Qxx.c:140: SPI_transfer(0x00);
+      000D4C 75 82 00         [24]  814 	mov	dpl, #0x00
+      000D4F 12 07 97         [24]  815 	lcall	_SPI_transfer
+                                    816 ;	./src/N76_W25Qxx.c:142: for (i = 0; i < 256; i++)
+      000D52 7E 00            [12]  817 	mov	r6,#0x00
+      000D54 7F 00            [12]  818 	mov	r7,#0x00
+      000D56                        819 00104$:
+                                    820 ;	./src/N76_W25Qxx.c:144: u8Data = SPI_transfer(0x00);
+      000D56 75 82 00         [24]  821 	mov	dpl, #0x00
+      000D59 C0 07            [24]  822 	push	ar7
+      000D5B C0 06            [24]  823 	push	ar6
+      000D5D 12 07 97         [24]  824 	lcall	_SPI_transfer
+      000D60 AD 82            [24]  825 	mov	r5, dpl
+      000D62 D0 06            [24]  826 	pop	ar6
+      000D64 D0 07            [24]  827 	pop	ar7
+                                    828 ;	./src/N76_W25Qxx.c:145: if (u8Data != 0xFF)
+      000D66 BD FF 02         [24]  829 	cjne	r5,#0xff,00126$
+      000D69 80 04            [24]  830 	sjmp	00105$
+      000D6B                        831 00126$:
+                                    832 ;	./src/N76_W25Qxx.c:147: return W25Qxx_ERR;
+      000D6B 75 82 01         [24]  833 	mov	dpl, #0x01
+      000D6E 22               [24]  834 	ret
+      000D6F                        835 00105$:
+                                    836 ;	./src/N76_W25Qxx.c:142: for (i = 0; i < 256; i++)
+      000D6F 0E               [12]  837 	inc	r6
+      000D70 BE 00 01         [24]  838 	cjne	r6,#0x00,00127$
+      000D73 0F               [12]  839 	inc	r7
+      000D74                        840 00127$:
+      000D74 8E 04            [24]  841 	mov	ar4,r6
+      000D76 8F 05            [24]  842 	mov	ar5,r7
+      000D78 74 FF            [12]  843 	mov	a,#0x100 - 0x01
+      000D7A 2D               [12]  844 	add	a,r5
+      000D7B 50 D9            [24]  845 	jnc	00104$
+                                    846 ;	./src/N76_W25Qxx.c:151: setb(SPI_Px_SS, SPI_PIN_SS);
+      000D7D 43 90 02         [24]  847 	orl	_p1,#0x02
+                                    848 ;	./src/N76_W25Qxx.c:152: return W25Qxx_OK;
+      000D80 75 82 00         [24]  849 	mov	dpl, #0x00
+                                    850 ;	./src/N76_W25Qxx.c:153: }
+      000D83 22               [24]  851 	ret
+                                    852 ;------------------------------------------------------------
+                                    853 ;Allocation info for local variables in function 'W25Qxx_writePage'
                                     854 ;------------------------------------------------------------
-                                    855 ;Allocation info for local variables in function 'W25Qxx_writePage'
-                                    856 ;------------------------------------------------------------
-                                    857 ;data                      Allocated with name '_W25Qxx_writePage_PARM_2'
-                                    858 ;pageNum                   Allocated to registers r4 r5 r6 r7 
-                                    859 ;i                         Allocated to registers r4 r5 r6 r7 
-                                    860 ;------------------------------------------------------------
-                                    861 ;	./src/N76_W25Qxx.c:155: void W25Qxx_writePage(uint32_t pageNum, uint8_t *data)
+                                    855 ;data                      Allocated with name '_W25Qxx_writePage_PARM_2'
+                                    856 ;pageNum                   Allocated to registers r4 r5 r6 r7 
+                                    857 ;i                         Allocated to registers r4 r5 r6 r7 
+                                    858 ;------------------------------------------------------------
+                                    859 ;	./src/N76_W25Qxx.c:155: void W25Qxx_writePage(uint32_t pageNum, uint8_t *data)
+                                    860 ;	-----------------------------------------
+                                    861 ;	 function W25Qxx_writePage
                                     862 ;	-----------------------------------------
-                                    863 ;	 function W25Qxx_writePage
-                                    864 ;	-----------------------------------------
-      000AE1                        865 _W25Qxx_writePage:
-      000AE1 AC 82            [24]  866 	mov	r4,dpl
-      000AE3 AD 83            [24]  867 	mov	r5,dph
-      000AE5 AE F0            [24]  868 	mov	r6,b
-                                    869 ;	./src/N76_W25Qxx.c:158: i = (uint32_t)pageNum * (uint32_t)PAGE_BYTE;
-      000AE7 8E 07            [24]  870 	mov	ar7,r6
-      000AE9 8D 06            [24]  871 	mov	ar6,r5
-      000AEB 8C 05            [24]  872 	mov	ar5,r4
-      000AED 7C 00            [12]  873 	mov	r4,#0x00
-                                    874 ;	./src/N76_W25Qxx.c:160: W25Qxx_writeEnable();
-      000AEF C0 07            [24]  875 	push	ar7
-      000AF1 C0 06            [24]  876 	push	ar6
-      000AF3 C0 05            [24]  877 	push	ar5
-      000AF5 C0 04            [24]  878 	push	ar4
-      000AF7 12 09 A7         [24]  879 	lcall	_W25Qxx_writeEnable
-                                    880 ;	./src/N76_W25Qxx.c:162: clrb(SPI_Px_SS, SPI_PIN_SS);
-      000AFA 53 90 FD         [24]  881 	anl	_p1,#0xfd
-                                    882 ;	./src/N76_W25Qxx.c:163: SPI_transfer(W25Q_CMD_PAGE_PROGRAM);
-      000AFD 75 82 02         [24]  883 	mov	dpl,#0x02
-      000B00 12 05 AF         [24]  884 	lcall	_SPI_transfer
-      000B03 D0 04            [24]  885 	pop	ar4
-      000B05 D0 05            [24]  886 	pop	ar5
-      000B07 D0 06            [24]  887 	pop	ar6
-      000B09 D0 07            [24]  888 	pop	ar7
-                                    889 ;	./src/N76_W25Qxx.c:164: W25Qxx_writeAddr(i);
-      000B0B 8C 82            [24]  890 	mov	dpl,r4
-      000B0D 8D 83            [24]  891 	mov	dph,r5
-      000B0F 8E F0            [24]  892 	mov	b,r6
-      000B11 EF               [12]  893 	mov	a,r7
-      000B12 12 09 12         [24]  894 	lcall	_W25Qxx_writeAddr
-                                    895 ;	./src/N76_W25Qxx.c:167: for (i = 0; i < PAGE_BYTE; i++)
-      000B15 7C 00            [12]  896 	mov	r4,#0x00
-      000B17 7D 00            [12]  897 	mov	r5,#0x00
-      000B19 7E 00            [12]  898 	mov	r6,#0x00
-      000B1B 7F 00            [12]  899 	mov	r7,#0x00
-      000B1D                        900 00102$:
-                                    901 ;	./src/N76_W25Qxx.c:169: SPI_transfer((uint8_t)data[i]);
-      000B1D EC               [12]  902 	mov	a,r4
-      000B1E 25 1D            [12]  903 	add	a,_W25Qxx_writePage_PARM_2
-      000B20 F9               [12]  904 	mov	r1,a
-      000B21 ED               [12]  905 	mov	a,r5
-      000B22 35 1E            [12]  906 	addc	a,(_W25Qxx_writePage_PARM_2 + 1)
-      000B24 FA               [12]  907 	mov	r2,a
-      000B25 AB 1F            [24]  908 	mov	r3,(_W25Qxx_writePage_PARM_2 + 2)
-      000B27 89 82            [24]  909 	mov	dpl,r1
-      000B29 8A 83            [24]  910 	mov	dph,r2
-      000B2B 8B F0            [24]  911 	mov	b,r3
-      000B2D 12 0F B5         [24]  912 	lcall	__gptrget
-      000B30 F5 82            [12]  913 	mov	dpl,a
-      000B32 C0 07            [24]  914 	push	ar7
-      000B34 C0 06            [24]  915 	push	ar6
-      000B36 C0 05            [24]  916 	push	ar5
-      000B38 C0 04            [24]  917 	push	ar4
-      000B3A 12 05 AF         [24]  918 	lcall	_SPI_transfer
-      000B3D D0 04            [24]  919 	pop	ar4
-      000B3F D0 05            [24]  920 	pop	ar5
-      000B41 D0 06            [24]  921 	pop	ar6
-      000B43 D0 07            [24]  922 	pop	ar7
-                                    923 ;	./src/N76_W25Qxx.c:167: for (i = 0; i < PAGE_BYTE; i++)
-      000B45 0C               [12]  924 	inc	r4
-      000B46 BC 00 09         [24]  925 	cjne	r4,#0x00,00115$
-      000B49 0D               [12]  926 	inc	r5
-      000B4A BD 00 05         [24]  927 	cjne	r5,#0x00,00115$
-      000B4D 0E               [12]  928 	inc	r6
-      000B4E BE 00 01         [24]  929 	cjne	r6,#0x00,00115$
-      000B51 0F               [12]  930 	inc	r7
-      000B52                        931 00115$:
-      000B52 C3               [12]  932 	clr	c
-      000B53 ED               [12]  933 	mov	a,r5
-      000B54 94 01            [12]  934 	subb	a,#0x01
-      000B56 EE               [12]  935 	mov	a,r6
-      000B57 94 00            [12]  936 	subb	a,#0x00
-      000B59 EF               [12]  937 	mov	a,r7
-      000B5A 94 00            [12]  938 	subb	a,#0x00
-      000B5C 40 BF            [24]  939 	jc	00102$
-                                    940 ;	./src/N76_W25Qxx.c:171: setb(SPI_Px_SS, SPI_PIN_SS);
-      000B5E 43 90 02         [24]  941 	orl	_p1,#0x02
-                                    942 ;	./src/N76_W25Qxx.c:173: W25Qxx_waitIdle(); // wait ultil done
-      000B61 12 0A 79         [24]  943 	lcall	_W25Qxx_waitIdle
-                                    944 ;	./src/N76_W25Qxx.c:174: W25Qxx_writeDisable();
-                                    945 ;	./src/N76_W25Qxx.c:175: }
-      000B64 02 09 AD         [24]  946 	ljmp	_W25Qxx_writeDisable
+      000D84                        863 _W25Qxx_writePage:
+      000D84 AC 82            [24]  864 	mov	r4,dpl
+      000D86 AD 83            [24]  865 	mov	r5,dph
+      000D88 AE F0            [24]  866 	mov	r6,b
+                                    867 ;	./src/N76_W25Qxx.c:158: i = (uint32_t)pageNum * (uint32_t)PAGE_BYTE;
+      000D8A 8E 07            [24]  868 	mov	ar7,r6
+      000D8C 8D 06            [24]  869 	mov	ar6,r5
+      000D8E 8C 05            [24]  870 	mov	ar5,r4
+      000D90 7C 00            [12]  871 	mov	r4,#0x00
+                                    872 ;	./src/N76_W25Qxx.c:160: W25Qxx_writeEnable();
+      000D92 C0 07            [24]  873 	push	ar7
+      000D94 C0 06            [24]  874 	push	ar6
+      000D96 C0 05            [24]  875 	push	ar5
+      000D98 C0 04            [24]  876 	push	ar4
+      000D9A 12 0C 4E         [24]  877 	lcall	_W25Qxx_writeEnable
+                                    878 ;	./src/N76_W25Qxx.c:162: clrb(SPI_Px_SS, SPI_PIN_SS);
+      000D9D 53 90 FD         [24]  879 	anl	_p1,#0xfd
+                                    880 ;	./src/N76_W25Qxx.c:163: SPI_transfer(W25Q_CMD_PAGE_PROGRAM);
+      000DA0 75 82 02         [24]  881 	mov	dpl, #0x02
+      000DA3 12 07 97         [24]  882 	lcall	_SPI_transfer
+      000DA6 D0 04            [24]  883 	pop	ar4
+      000DA8 D0 05            [24]  884 	pop	ar5
+      000DAA D0 06            [24]  885 	pop	ar6
+      000DAC D0 07            [24]  886 	pop	ar7
+                                    887 ;	./src/N76_W25Qxx.c:164: W25Qxx_writeAddr(i);
+      000DAE 8C 82            [24]  888 	mov	dpl, r4
+      000DB0 8D 83            [24]  889 	mov	dph, r5
+      000DB2 8E F0            [24]  890 	mov	b, r6
+      000DB4 EF               [12]  891 	mov	a, r7
+      000DB5 12 0B B9         [24]  892 	lcall	_W25Qxx_writeAddr
+                                    893 ;	./src/N76_W25Qxx.c:167: for (i = 0; i < PAGE_BYTE; i++)
+      000DB8 7C 00            [12]  894 	mov	r4,#0x00
+      000DBA 7D 00            [12]  895 	mov	r5,#0x00
+      000DBC 7E 00            [12]  896 	mov	r6,#0x00
+      000DBE 7F 00            [12]  897 	mov	r7,#0x00
+      000DC0                        898 00102$:
+                                    899 ;	./src/N76_W25Qxx.c:169: SPI_transfer((uint8_t)data[i]);
+      000DC0 EC               [12]  900 	mov	a,r4
+      000DC1 25 35            [12]  901 	add	a, _W25Qxx_writePage_PARM_2
+      000DC3 F9               [12]  902 	mov	r1,a
+      000DC4 ED               [12]  903 	mov	a,r5
+      000DC5 35 36            [12]  904 	addc	a, (_W25Qxx_writePage_PARM_2 + 1)
+      000DC7 FA               [12]  905 	mov	r2,a
+      000DC8 AB 37            [24]  906 	mov	r3,(_W25Qxx_writePage_PARM_2 + 2)
+      000DCA 89 82            [24]  907 	mov	dpl,r1
+      000DCC 8A 83            [24]  908 	mov	dph,r2
+      000DCE 8B F0            [24]  909 	mov	b,r3
+      000DD0 12 12 5A         [24]  910 	lcall	__gptrget
+      000DD3 F5 82            [12]  911 	mov	dpl,a
+      000DD5 C0 07            [24]  912 	push	ar7
+      000DD7 C0 06            [24]  913 	push	ar6
+      000DD9 C0 05            [24]  914 	push	ar5
+      000DDB C0 04            [24]  915 	push	ar4
+      000DDD 12 07 97         [24]  916 	lcall	_SPI_transfer
+      000DE0 D0 04            [24]  917 	pop	ar4
+      000DE2 D0 05            [24]  918 	pop	ar5
+      000DE4 D0 06            [24]  919 	pop	ar6
+      000DE6 D0 07            [24]  920 	pop	ar7
+                                    921 ;	./src/N76_W25Qxx.c:167: for (i = 0; i < PAGE_BYTE; i++)
+      000DE8 0C               [12]  922 	inc	r4
+      000DE9 BC 00 09         [24]  923 	cjne	r4,#0x00,00119$
+      000DEC 0D               [12]  924 	inc	r5
+      000DED BD 00 05         [24]  925 	cjne	r5,#0x00,00119$
+      000DF0 0E               [12]  926 	inc	r6
+      000DF1 BE 00 01         [24]  927 	cjne	r6,#0x00,00119$
+      000DF4 0F               [12]  928 	inc	r7
+      000DF5                        929 00119$:
+      000DF5 C3               [12]  930 	clr	c
+      000DF6 ED               [12]  931 	mov	a,r5
+      000DF7 94 01            [12]  932 	subb	a,#0x01
+      000DF9 EE               [12]  933 	mov	a,r6
+      000DFA 94 00            [12]  934 	subb	a,#0x00
+      000DFC EF               [12]  935 	mov	a,r7
+      000DFD 94 00            [12]  936 	subb	a,#0x00
+      000DFF 40 BF            [24]  937 	jc	00102$
+                                    938 ;	./src/N76_W25Qxx.c:171: setb(SPI_Px_SS, SPI_PIN_SS);
+      000E01 43 90 02         [24]  939 	orl	_p1,#0x02
+                                    940 ;	./src/N76_W25Qxx.c:173: W25Qxx_waitIdle(); // wait ultil done
+      000E04 12 0D 1A         [24]  941 	lcall	_W25Qxx_waitIdle
+                                    942 ;	./src/N76_W25Qxx.c:174: W25Qxx_writeDisable();
+                                    943 ;	./src/N76_W25Qxx.c:175: }
+      000E07 02 0C 54         [24]  944 	ljmp	_W25Qxx_writeDisable
+                                    945 ;------------------------------------------------------------
+                                    946 ;Allocation info for local variables in function 'W25Qxx_writeBuff'
                                     947 ;------------------------------------------------------------
-                                    948 ;Allocation info for local variables in function 'W25Qxx_writeBuff'
-                                    949 ;------------------------------------------------------------
-                                    950 ;data                      Allocated with name '_W25Qxx_writeBuff_PARM_2'
-                                    951 ;len                       Allocated with name '_W25Qxx_writeBuff_PARM_3'
-                                    952 ;addr                      Allocated to registers r4 r5 r6 r7 
-                                    953 ;i                         Allocated to registers r6 r7 
-                                    954 ;------------------------------------------------------------
-                                    955 ;	./src/N76_W25Qxx.c:177: void W25Qxx_writeBuff(uint32_t addr, uint8_t *data, uint16_t len)
+                                    948 ;data                      Allocated with name '_W25Qxx_writeBuff_PARM_2'
+                                    949 ;len                       Allocated with name '_W25Qxx_writeBuff_PARM_3'
+                                    950 ;addr                      Allocated to registers r4 r5 r6 r7 
+                                    951 ;i                         Allocated to registers r6 r7 
+                                    952 ;------------------------------------------------------------
+                                    953 ;	./src/N76_W25Qxx.c:177: void W25Qxx_writeBuff(uint32_t addr, uint8_t *data, uint16_t len)
+                                    954 ;	-----------------------------------------
+                                    955 ;	 function W25Qxx_writeBuff
                                     956 ;	-----------------------------------------
-                                    957 ;	 function W25Qxx_writeBuff
-                                    958 ;	-----------------------------------------
-      000B67                        959 _W25Qxx_writeBuff:
-      000B67 AC 82            [24]  960 	mov	r4,dpl
-      000B69 AD 83            [24]  961 	mov	r5,dph
-      000B6B AE F0            [24]  962 	mov	r6,b
-      000B6D FF               [12]  963 	mov	r7,a
-                                    964 ;	./src/N76_W25Qxx.c:181: W25Qxx_writeEnable();
-      000B6E C0 07            [24]  965 	push	ar7
-      000B70 C0 06            [24]  966 	push	ar6
-      000B72 C0 05            [24]  967 	push	ar5
-      000B74 C0 04            [24]  968 	push	ar4
-      000B76 12 09 A7         [24]  969 	lcall	_W25Qxx_writeEnable
-                                    970 ;	./src/N76_W25Qxx.c:182: clrb(SPI_Px_SS, SPI_PIN_SS);
-      000B79 53 90 FD         [24]  971 	anl	_p1,#0xfd
-                                    972 ;	./src/N76_W25Qxx.c:184: SPI_transfer(W25Q_CMD_PAGE_PROGRAM);
-      000B7C 75 82 02         [24]  973 	mov	dpl,#0x02
-      000B7F 12 05 AF         [24]  974 	lcall	_SPI_transfer
-      000B82 D0 04            [24]  975 	pop	ar4
-      000B84 D0 05            [24]  976 	pop	ar5
-      000B86 D0 06            [24]  977 	pop	ar6
-      000B88 D0 07            [24]  978 	pop	ar7
-                                    979 ;	./src/N76_W25Qxx.c:185: W25Qxx_writeAddr(addr);
-      000B8A 8C 82            [24]  980 	mov	dpl,r4
-      000B8C 8D 83            [24]  981 	mov	dph,r5
-      000B8E 8E F0            [24]  982 	mov	b,r6
-      000B90 EF               [12]  983 	mov	a,r7
-      000B91 12 09 12         [24]  984 	lcall	_W25Qxx_writeAddr
-                                    985 ;	./src/N76_W25Qxx.c:188: for (i = 0; i < len; i++)
-      000B94 7E 00            [12]  986 	mov	r6,#0x00
-      000B96 7F 00            [12]  987 	mov	r7,#0x00
-      000B98                        988 00103$:
-      000B98 C3               [12]  989 	clr	c
-      000B99 EE               [12]  990 	mov	a,r6
-      000B9A 95 23            [12]  991 	subb	a,_W25Qxx_writeBuff_PARM_3
-      000B9C EF               [12]  992 	mov	a,r7
-      000B9D 95 24            [12]  993 	subb	a,(_W25Qxx_writeBuff_PARM_3 + 1)
-      000B9F 50 27            [24]  994 	jnc	00101$
-                                    995 ;	./src/N76_W25Qxx.c:190: SPI_transfer((uint8_t)data[i]);
-      000BA1 EE               [12]  996 	mov	a,r6
-      000BA2 25 20            [12]  997 	add	a,_W25Qxx_writeBuff_PARM_2
-      000BA4 FB               [12]  998 	mov	r3,a
-      000BA5 EF               [12]  999 	mov	a,r7
-      000BA6 35 21            [12] 1000 	addc	a,(_W25Qxx_writeBuff_PARM_2 + 1)
-      000BA8 FC               [12] 1001 	mov	r4,a
-      000BA9 AD 22            [24] 1002 	mov	r5,(_W25Qxx_writeBuff_PARM_2 + 2)
-      000BAB 8B 82            [24] 1003 	mov	dpl,r3
-      000BAD 8C 83            [24] 1004 	mov	dph,r4
-      000BAF 8D F0            [24] 1005 	mov	b,r5
-      000BB1 12 0F B5         [24] 1006 	lcall	__gptrget
-      000BB4 F5 82            [12] 1007 	mov	dpl,a
-      000BB6 C0 07            [24] 1008 	push	ar7
-      000BB8 C0 06            [24] 1009 	push	ar6
-      000BBA 12 05 AF         [24] 1010 	lcall	_SPI_transfer
-      000BBD D0 06            [24] 1011 	pop	ar6
-      000BBF D0 07            [24] 1012 	pop	ar7
-                                   1013 ;	./src/N76_W25Qxx.c:188: for (i = 0; i < len; i++)
-      000BC1 0E               [12] 1014 	inc	r6
-      000BC2 BE 00 D3         [24] 1015 	cjne	r6,#0x00,00103$
-      000BC5 0F               [12] 1016 	inc	r7
-      000BC6 80 D0            [24] 1017 	sjmp	00103$
-      000BC8                       1018 00101$:
-                                   1019 ;	./src/N76_W25Qxx.c:193: setb(SPI_Px_SS, SPI_PIN_SS);
-      000BC8 43 90 02         [24] 1020 	orl	_p1,#0x02
-                                   1021 ;	./src/N76_W25Qxx.c:194: W25Qxx_waitIdle(); // wait ultil done
-      000BCB 12 0A 79         [24] 1022 	lcall	_W25Qxx_waitIdle
-                                   1023 ;	./src/N76_W25Qxx.c:195: W25Qxx_writeDisable();
-                                   1024 ;	./src/N76_W25Qxx.c:196: }
-      000BCE 02 09 AD         [24] 1025 	ljmp	_W25Qxx_writeDisable
+      000E0A                        957 _W25Qxx_writeBuff:
+      000E0A AC 82            [24]  958 	mov	r4,dpl
+      000E0C AD 83            [24]  959 	mov	r5,dph
+      000E0E AE F0            [24]  960 	mov	r6,b
+      000E10 FF               [12]  961 	mov	r7,a
+                                    962 ;	./src/N76_W25Qxx.c:181: W25Qxx_writeEnable();
+      000E11 C0 07            [24]  963 	push	ar7
+      000E13 C0 06            [24]  964 	push	ar6
+      000E15 C0 05            [24]  965 	push	ar5
+      000E17 C0 04            [24]  966 	push	ar4
+      000E19 12 0C 4E         [24]  967 	lcall	_W25Qxx_writeEnable
+                                    968 ;	./src/N76_W25Qxx.c:182: clrb(SPI_Px_SS, SPI_PIN_SS);
+      000E1C 53 90 FD         [24]  969 	anl	_p1,#0xfd
+                                    970 ;	./src/N76_W25Qxx.c:184: SPI_transfer(W25Q_CMD_PAGE_PROGRAM);
+      000E1F 75 82 02         [24]  971 	mov	dpl, #0x02
+      000E22 12 07 97         [24]  972 	lcall	_SPI_transfer
+      000E25 D0 04            [24]  973 	pop	ar4
+      000E27 D0 05            [24]  974 	pop	ar5
+      000E29 D0 06            [24]  975 	pop	ar6
+      000E2B D0 07            [24]  976 	pop	ar7
+                                    977 ;	./src/N76_W25Qxx.c:185: W25Qxx_writeAddr(addr);
+      000E2D 8C 82            [24]  978 	mov	dpl, r4
+      000E2F 8D 83            [24]  979 	mov	dph, r5
+      000E31 8E F0            [24]  980 	mov	b, r6
+      000E33 EF               [12]  981 	mov	a, r7
+      000E34 12 0B B9         [24]  982 	lcall	_W25Qxx_writeAddr
+                                    983 ;	./src/N76_W25Qxx.c:188: for (i = 0; i < len; i++)
+      000E37 7E 00            [12]  984 	mov	r6,#0x00
+      000E39 7F 00            [12]  985 	mov	r7,#0x00
+      000E3B                        986 00103$:
+      000E3B C3               [12]  987 	clr	c
+      000E3C EE               [12]  988 	mov	a,r6
+      000E3D 95 3B            [12]  989 	subb	a,_W25Qxx_writeBuff_PARM_3
+      000E3F EF               [12]  990 	mov	a,r7
+      000E40 95 3C            [12]  991 	subb	a,(_W25Qxx_writeBuff_PARM_3 + 1)
+      000E42 50 27            [24]  992 	jnc	00101$
+                                    993 ;	./src/N76_W25Qxx.c:190: SPI_transfer((uint8_t)data[i]);
+      000E44 EE               [12]  994 	mov	a,r6
+      000E45 25 38            [12]  995 	add	a, _W25Qxx_writeBuff_PARM_2
+      000E47 FB               [12]  996 	mov	r3,a
+      000E48 EF               [12]  997 	mov	a,r7
+      000E49 35 39            [12]  998 	addc	a, (_W25Qxx_writeBuff_PARM_2 + 1)
+      000E4B FC               [12]  999 	mov	r4,a
+      000E4C AD 3A            [24] 1000 	mov	r5,(_W25Qxx_writeBuff_PARM_2 + 2)
+      000E4E 8B 82            [24] 1001 	mov	dpl,r3
+      000E50 8C 83            [24] 1002 	mov	dph,r4
+      000E52 8D F0            [24] 1003 	mov	b,r5
+      000E54 12 12 5A         [24] 1004 	lcall	__gptrget
+      000E57 F5 82            [12] 1005 	mov	dpl,a
+      000E59 C0 07            [24] 1006 	push	ar7
+      000E5B C0 06            [24] 1007 	push	ar6
+      000E5D 12 07 97         [24] 1008 	lcall	_SPI_transfer
+      000E60 D0 06            [24] 1009 	pop	ar6
+      000E62 D0 07            [24] 1010 	pop	ar7
+                                   1011 ;	./src/N76_W25Qxx.c:188: for (i = 0; i < len; i++)
+      000E64 0E               [12] 1012 	inc	r6
+      000E65 BE 00 D3         [24] 1013 	cjne	r6,#0x00,00103$
+      000E68 0F               [12] 1014 	inc	r7
+      000E69 80 D0            [24] 1015 	sjmp	00103$
+      000E6B                       1016 00101$:
+                                   1017 ;	./src/N76_W25Qxx.c:193: setb(SPI_Px_SS, SPI_PIN_SS);
+      000E6B 43 90 02         [24] 1018 	orl	_p1,#0x02
+                                   1019 ;	./src/N76_W25Qxx.c:194: W25Qxx_waitIdle(); // wait ultil done
+      000E6E 12 0D 1A         [24] 1020 	lcall	_W25Qxx_waitIdle
+                                   1021 ;	./src/N76_W25Qxx.c:195: W25Qxx_writeDisable();
+                                   1022 ;	./src/N76_W25Qxx.c:196: }
+      000E71 02 0C 54         [24] 1023 	ljmp	_W25Qxx_writeDisable
+                                   1024 ;------------------------------------------------------------
+                                   1025 ;Allocation info for local variables in function 'W25Qxx_readPage'
                                    1026 ;------------------------------------------------------------
-                                   1027 ;Allocation info for local variables in function 'W25Qxx_readPage'
-                                   1028 ;------------------------------------------------------------
-                                   1029 ;data                      Allocated with name '_W25Qxx_readPage_PARM_2'
-                                   1030 ;pageNum                   Allocated to registers r4 r5 r6 r7 
-                                   1031 ;i                         Allocated to registers r4 r5 r6 r7 
-                                   1032 ;------------------------------------------------------------
-                                   1033 ;	./src/N76_W25Qxx.c:198: void W25Qxx_readPage(uint32_t pageNum, uint8_t *data)
+                                   1027 ;data                      Allocated with name '_W25Qxx_readPage_PARM_2'
+                                   1028 ;pageNum                   Allocated to registers r4 r5 r6 r7 
+                                   1029 ;i                         Allocated to registers r4 r5 r6 r7 
+                                   1030 ;------------------------------------------------------------
+                                   1031 ;	./src/N76_W25Qxx.c:198: void W25Qxx_readPage(uint32_t pageNum, uint8_t *data)
+                                   1032 ;	-----------------------------------------
+                                   1033 ;	 function W25Qxx_readPage
                                    1034 ;	-----------------------------------------
-                                   1035 ;	 function W25Qxx_readPage
-                                   1036 ;	-----------------------------------------
-      000BD1                       1037 _W25Qxx_readPage:
-      000BD1 AC 82            [24] 1038 	mov	r4,dpl
-      000BD3 AD 83            [24] 1039 	mov	r5,dph
-      000BD5 AE F0            [24] 1040 	mov	r6,b
-                                   1041 ;	./src/N76_W25Qxx.c:201: i = pageNum * PAGE_BYTE;
-      000BD7 8E 07            [24] 1042 	mov	ar7,r6
-      000BD9 8D 06            [24] 1043 	mov	ar6,r5
-      000BDB 8C 05            [24] 1044 	mov	ar5,r4
-      000BDD 7C 00            [12] 1045 	mov	r4,#0x00
-                                   1046 ;	./src/N76_W25Qxx.c:203: clrb(SPI_Px_SS, SPI_PIN_SS);
-      000BDF 53 90 FD         [24] 1047 	anl	_p1,#0xfd
-                                   1048 ;	./src/N76_W25Qxx.c:204: SPI_transfer(W25Q_CMD_READ_DATA);
-      000BE2 75 82 03         [24] 1049 	mov	dpl,#0x03
-      000BE5 C0 07            [24] 1050 	push	ar7
-      000BE7 C0 06            [24] 1051 	push	ar6
-      000BE9 C0 05            [24] 1052 	push	ar5
-      000BEB C0 04            [24] 1053 	push	ar4
-      000BED 12 05 AF         [24] 1054 	lcall	_SPI_transfer
-      000BF0 D0 04            [24] 1055 	pop	ar4
-      000BF2 D0 05            [24] 1056 	pop	ar5
-      000BF4 D0 06            [24] 1057 	pop	ar6
-      000BF6 D0 07            [24] 1058 	pop	ar7
-                                   1059 ;	./src/N76_W25Qxx.c:205: W25Qxx_writeAddr(i);
-      000BF8 8C 82            [24] 1060 	mov	dpl,r4
-      000BFA 8D 83            [24] 1061 	mov	dph,r5
-      000BFC 8E F0            [24] 1062 	mov	b,r6
-      000BFE EF               [12] 1063 	mov	a,r7
-      000BFF 12 09 12         [24] 1064 	lcall	_W25Qxx_writeAddr
-                                   1065 ;	./src/N76_W25Qxx.c:207: for (i = 0; i < PAGE_BYTE; i++)
-      000C02 7C 00            [12] 1066 	mov	r4,#0x00
-      000C04 7D 00            [12] 1067 	mov	r5,#0x00
-      000C06 7E 00            [12] 1068 	mov	r6,#0x00
-      000C08 7F 00            [12] 1069 	mov	r7,#0x00
-      000C0A                       1070 00102$:
-                                   1071 ;	./src/N76_W25Qxx.c:209: data[i] = SPI_transfer(0x00);
-      000C0A EC               [12] 1072 	mov	a,r4
-      000C0B 25 25            [12] 1073 	add	a,_W25Qxx_readPage_PARM_2
-      000C0D F9               [12] 1074 	mov	r1,a
-      000C0E ED               [12] 1075 	mov	a,r5
-      000C0F 35 26            [12] 1076 	addc	a,(_W25Qxx_readPage_PARM_2 + 1)
-      000C11 FA               [12] 1077 	mov	r2,a
-      000C12 AB 27            [24] 1078 	mov	r3,(_W25Qxx_readPage_PARM_2 + 2)
-      000C14 75 82 00         [24] 1079 	mov	dpl,#0x00
-      000C17 C0 07            [24] 1080 	push	ar7
-      000C19 C0 06            [24] 1081 	push	ar6
-      000C1B C0 05            [24] 1082 	push	ar5
-      000C1D C0 04            [24] 1083 	push	ar4
-      000C1F C0 03            [24] 1084 	push	ar3
-      000C21 C0 02            [24] 1085 	push	ar2
-      000C23 C0 01            [24] 1086 	push	ar1
-      000C25 12 05 AF         [24] 1087 	lcall	_SPI_transfer
-      000C28 A8 82            [24] 1088 	mov	r0,dpl
-      000C2A D0 01            [24] 1089 	pop	ar1
-      000C2C D0 02            [24] 1090 	pop	ar2
-      000C2E D0 03            [24] 1091 	pop	ar3
-      000C30 D0 04            [24] 1092 	pop	ar4
-      000C32 D0 05            [24] 1093 	pop	ar5
-      000C34 D0 06            [24] 1094 	pop	ar6
-      000C36 D0 07            [24] 1095 	pop	ar7
-      000C38 89 82            [24] 1096 	mov	dpl,r1
-      000C3A 8A 83            [24] 1097 	mov	dph,r2
-      000C3C 8B F0            [24] 1098 	mov	b,r3
-      000C3E E8               [12] 1099 	mov	a,r0
-      000C3F 12 0E 15         [24] 1100 	lcall	__gptrput
-                                   1101 ;	./src/N76_W25Qxx.c:207: for (i = 0; i < PAGE_BYTE; i++)
-      000C42 0C               [12] 1102 	inc	r4
-      000C43 BC 00 09         [24] 1103 	cjne	r4,#0x00,00115$
-      000C46 0D               [12] 1104 	inc	r5
-      000C47 BD 00 05         [24] 1105 	cjne	r5,#0x00,00115$
-      000C4A 0E               [12] 1106 	inc	r6
-      000C4B BE 00 01         [24] 1107 	cjne	r6,#0x00,00115$
-      000C4E 0F               [12] 1108 	inc	r7
-      000C4F                       1109 00115$:
-      000C4F C3               [12] 1110 	clr	c
-      000C50 ED               [12] 1111 	mov	a,r5
-      000C51 94 01            [12] 1112 	subb	a,#0x01
-      000C53 EE               [12] 1113 	mov	a,r6
-      000C54 94 00            [12] 1114 	subb	a,#0x00
-      000C56 EF               [12] 1115 	mov	a,r7
-      000C57 94 00            [12] 1116 	subb	a,#0x00
-      000C59 40 AF            [24] 1117 	jc	00102$
-                                   1118 ;	./src/N76_W25Qxx.c:211: setb(SPI_Px_SS, SPI_PIN_SS);
-      000C5B 43 90 02         [24] 1119 	orl	_p1,#0x02
-                                   1120 ;	./src/N76_W25Qxx.c:212: }//-----------------------------------------------------------------------------------------------------------
-      000C5E 22               [24] 1121 	ret
+      000E74                       1035 _W25Qxx_readPage:
+      000E74 AC 82            [24] 1036 	mov	r4,dpl
+      000E76 AD 83            [24] 1037 	mov	r5,dph
+      000E78 AE F0            [24] 1038 	mov	r6,b
+                                   1039 ;	./src/N76_W25Qxx.c:201: i = pageNum * PAGE_BYTE;
+      000E7A 8E 07            [24] 1040 	mov	ar7,r6
+      000E7C 8D 06            [24] 1041 	mov	ar6,r5
+      000E7E 8C 05            [24] 1042 	mov	ar5,r4
+      000E80 7C 00            [12] 1043 	mov	r4,#0x00
+                                   1044 ;	./src/N76_W25Qxx.c:203: clrb(SPI_Px_SS, SPI_PIN_SS);
+      000E82 53 90 FD         [24] 1045 	anl	_p1,#0xfd
+                                   1046 ;	./src/N76_W25Qxx.c:204: SPI_transfer(W25Q_CMD_READ_DATA);
+      000E85 75 82 03         [24] 1047 	mov	dpl, #0x03
+      000E88 C0 07            [24] 1048 	push	ar7
+      000E8A C0 06            [24] 1049 	push	ar6
+      000E8C C0 05            [24] 1050 	push	ar5
+      000E8E C0 04            [24] 1051 	push	ar4
+      000E90 12 07 97         [24] 1052 	lcall	_SPI_transfer
+      000E93 D0 04            [24] 1053 	pop	ar4
+      000E95 D0 05            [24] 1054 	pop	ar5
+      000E97 D0 06            [24] 1055 	pop	ar6
+      000E99 D0 07            [24] 1056 	pop	ar7
+                                   1057 ;	./src/N76_W25Qxx.c:205: W25Qxx_writeAddr(i);
+      000E9B 8C 82            [24] 1058 	mov	dpl, r4
+      000E9D 8D 83            [24] 1059 	mov	dph, r5
+      000E9F 8E F0            [24] 1060 	mov	b, r6
+      000EA1 EF               [12] 1061 	mov	a, r7
+      000EA2 12 0B B9         [24] 1062 	lcall	_W25Qxx_writeAddr
+                                   1063 ;	./src/N76_W25Qxx.c:207: for (i = 0; i < PAGE_BYTE; i++)
+      000EA5 7C 00            [12] 1064 	mov	r4,#0x00
+      000EA7 7D 00            [12] 1065 	mov	r5,#0x00
+      000EA9 7E 00            [12] 1066 	mov	r6,#0x00
+      000EAB 7F 00            [12] 1067 	mov	r7,#0x00
+      000EAD                       1068 00102$:
+                                   1069 ;	./src/N76_W25Qxx.c:209: data[i] = SPI_transfer(0x00);
+      000EAD EC               [12] 1070 	mov	a,r4
+      000EAE 25 3D            [12] 1071 	add	a, _W25Qxx_readPage_PARM_2
+      000EB0 F9               [12] 1072 	mov	r1,a
+      000EB1 ED               [12] 1073 	mov	a,r5
+      000EB2 35 3E            [12] 1074 	addc	a, (_W25Qxx_readPage_PARM_2 + 1)
+      000EB4 FA               [12] 1075 	mov	r2,a
+      000EB5 AB 3F            [24] 1076 	mov	r3,(_W25Qxx_readPage_PARM_2 + 2)
+      000EB7 75 82 00         [24] 1077 	mov	dpl, #0x00
+      000EBA C0 07            [24] 1078 	push	ar7
+      000EBC C0 06            [24] 1079 	push	ar6
+      000EBE C0 05            [24] 1080 	push	ar5
+      000EC0 C0 04            [24] 1081 	push	ar4
+      000EC2 C0 03            [24] 1082 	push	ar3
+      000EC4 C0 02            [24] 1083 	push	ar2
+      000EC6 C0 01            [24] 1084 	push	ar1
+      000EC8 12 07 97         [24] 1085 	lcall	_SPI_transfer
+      000ECB A8 82            [24] 1086 	mov	r0, dpl
+      000ECD D0 01            [24] 1087 	pop	ar1
+      000ECF D0 02            [24] 1088 	pop	ar2
+      000ED1 D0 03            [24] 1089 	pop	ar3
+      000ED3 D0 04            [24] 1090 	pop	ar4
+      000ED5 D0 05            [24] 1091 	pop	ar5
+      000ED7 D0 06            [24] 1092 	pop	ar6
+      000ED9 D0 07            [24] 1093 	pop	ar7
+      000EDB 89 82            [24] 1094 	mov	dpl,r1
+      000EDD 8A 83            [24] 1095 	mov	dph,r2
+      000EDF 8B F0            [24] 1096 	mov	b,r3
+      000EE1 E8               [12] 1097 	mov	a,r0
+      000EE2 12 10 BA         [24] 1098 	lcall	__gptrput
+                                   1099 ;	./src/N76_W25Qxx.c:207: for (i = 0; i < PAGE_BYTE; i++)
+      000EE5 0C               [12] 1100 	inc	r4
+      000EE6 BC 00 09         [24] 1101 	cjne	r4,#0x00,00119$
+      000EE9 0D               [12] 1102 	inc	r5
+      000EEA BD 00 05         [24] 1103 	cjne	r5,#0x00,00119$
+      000EED 0E               [12] 1104 	inc	r6
+      000EEE BE 00 01         [24] 1105 	cjne	r6,#0x00,00119$
+      000EF1 0F               [12] 1106 	inc	r7
+      000EF2                       1107 00119$:
+      000EF2 C3               [12] 1108 	clr	c
+      000EF3 ED               [12] 1109 	mov	a,r5
+      000EF4 94 01            [12] 1110 	subb	a,#0x01
+      000EF6 EE               [12] 1111 	mov	a,r6
+      000EF7 94 00            [12] 1112 	subb	a,#0x00
+      000EF9 EF               [12] 1113 	mov	a,r7
+      000EFA 94 00            [12] 1114 	subb	a,#0x00
+      000EFC 40 AF            [24] 1115 	jc	00102$
+                                   1116 ;	./src/N76_W25Qxx.c:211: setb(SPI_Px_SS, SPI_PIN_SS);
+      000EFE 43 90 02         [24] 1117 	orl	_p1,#0x02
+                                   1118 ;	./src/N76_W25Qxx.c:212: } //-----------------------------------------------------------------------------------------------------------
+      000F01 22               [24] 1119 	ret
+                                   1120 ;------------------------------------------------------------
+                                   1121 ;Allocation info for local variables in function 'W25Qxx_readBuff'
                                    1122 ;------------------------------------------------------------
-                                   1123 ;Allocation info for local variables in function 'W25Qxx_readBuff'
-                                   1124 ;------------------------------------------------------------
-                                   1125 ;data                      Allocated with name '_W25Qxx_readBuff_PARM_2'
-                                   1126 ;len                       Allocated with name '_W25Qxx_readBuff_PARM_3'
-                                   1127 ;addr                      Allocated to registers r4 r5 r6 r7 
-                                   1128 ;i                         Allocated to registers r6 r7 
-                                   1129 ;------------------------------------------------------------
-                                   1130 ;	./src/N76_W25Qxx.c:213: void W25Qxx_readBuff(uint32_t addr, uint8_t *data, uint32_t len)
+                                   1123 ;data                      Allocated with name '_W25Qxx_readBuff_PARM_2'
+                                   1124 ;len                       Allocated with name '_W25Qxx_readBuff_PARM_3'
+                                   1125 ;addr                      Allocated to registers r4 r5 r6 r7 
+                                   1126 ;i                         Allocated to registers r6 r7 
+                                   1127 ;------------------------------------------------------------
+                                   1128 ;	./src/N76_W25Qxx.c:213: void W25Qxx_readBuff(uint32_t addr, uint8_t *data, uint32_t len)
+                                   1129 ;	-----------------------------------------
+                                   1130 ;	 function W25Qxx_readBuff
                                    1131 ;	-----------------------------------------
-                                   1132 ;	 function W25Qxx_readBuff
-                                   1133 ;	-----------------------------------------
-      000C5F                       1134 _W25Qxx_readBuff:
-      000C5F AC 82            [24] 1135 	mov	r4,dpl
-      000C61 AD 83            [24] 1136 	mov	r5,dph
-      000C63 AE F0            [24] 1137 	mov	r6,b
-      000C65 FF               [12] 1138 	mov	r7,a
-                                   1139 ;	./src/N76_W25Qxx.c:217: clrb(SPI_Px_SS, SPI_PIN_SS);
-      000C66 53 90 FD         [24] 1140 	anl	_p1,#0xfd
-                                   1141 ;	./src/N76_W25Qxx.c:218: SPI_transfer(W25Q_CMD_READ_DATA);
-      000C69 75 82 03         [24] 1142 	mov	dpl,#0x03
-      000C6C C0 07            [24] 1143 	push	ar7
-      000C6E C0 06            [24] 1144 	push	ar6
-      000C70 C0 05            [24] 1145 	push	ar5
-      000C72 C0 04            [24] 1146 	push	ar4
-      000C74 12 05 AF         [24] 1147 	lcall	_SPI_transfer
-      000C77 D0 04            [24] 1148 	pop	ar4
-      000C79 D0 05            [24] 1149 	pop	ar5
-      000C7B D0 06            [24] 1150 	pop	ar6
-      000C7D D0 07            [24] 1151 	pop	ar7
-                                   1152 ;	./src/N76_W25Qxx.c:219: W25Qxx_writeAddr(addr);
-      000C7F 8C 82            [24] 1153 	mov	dpl,r4
-      000C81 8D 83            [24] 1154 	mov	dph,r5
-      000C83 8E F0            [24] 1155 	mov	b,r6
-      000C85 EF               [12] 1156 	mov	a,r7
-      000C86 12 09 12         [24] 1157 	lcall	_W25Qxx_writeAddr
-                                   1158 ;	./src/N76_W25Qxx.c:221: for (i = 0; i < len; i++)
-      000C89 7E 00            [12] 1159 	mov	r6,#0x00
-      000C8B 7F 00            [12] 1160 	mov	r7,#0x00
-      000C8D                       1161 00103$:
-      000C8D 8E 02            [24] 1162 	mov	ar2,r6
-      000C8F 8F 03            [24] 1163 	mov	ar3,r7
-      000C91 7C 00            [12] 1164 	mov	r4,#0x00
-      000C93 7D 00            [12] 1165 	mov	r5,#0x00
-      000C95 C3               [12] 1166 	clr	c
-      000C96 EA               [12] 1167 	mov	a,r2
-      000C97 95 2B            [12] 1168 	subb	a,_W25Qxx_readBuff_PARM_3
-      000C99 EB               [12] 1169 	mov	a,r3
-      000C9A 95 2C            [12] 1170 	subb	a,(_W25Qxx_readBuff_PARM_3 + 1)
-      000C9C EC               [12] 1171 	mov	a,r4
-      000C9D 95 2D            [12] 1172 	subb	a,(_W25Qxx_readBuff_PARM_3 + 2)
-      000C9F ED               [12] 1173 	mov	a,r5
-      000CA0 95 2E            [12] 1174 	subb	a,(_W25Qxx_readBuff_PARM_3 + 3)
-      000CA2 50 37            [24] 1175 	jnc	00101$
-                                   1176 ;	./src/N76_W25Qxx.c:223: data[i] = SPI_transfer(0x00);
-      000CA4 EE               [12] 1177 	mov	a,r6
-      000CA5 25 28            [12] 1178 	add	a,_W25Qxx_readBuff_PARM_2
-      000CA7 FB               [12] 1179 	mov	r3,a
-      000CA8 EF               [12] 1180 	mov	a,r7
-      000CA9 35 29            [12] 1181 	addc	a,(_W25Qxx_readBuff_PARM_2 + 1)
-      000CAB FC               [12] 1182 	mov	r4,a
-      000CAC AD 2A            [24] 1183 	mov	r5,(_W25Qxx_readBuff_PARM_2 + 2)
-      000CAE 75 82 00         [24] 1184 	mov	dpl,#0x00
-      000CB1 C0 07            [24] 1185 	push	ar7
-      000CB3 C0 06            [24] 1186 	push	ar6
-      000CB5 C0 05            [24] 1187 	push	ar5
-      000CB7 C0 04            [24] 1188 	push	ar4
-      000CB9 C0 03            [24] 1189 	push	ar3
-      000CBB 12 05 AF         [24] 1190 	lcall	_SPI_transfer
-      000CBE AA 82            [24] 1191 	mov	r2,dpl
-      000CC0 D0 03            [24] 1192 	pop	ar3
-      000CC2 D0 04            [24] 1193 	pop	ar4
-      000CC4 D0 05            [24] 1194 	pop	ar5
-      000CC6 D0 06            [24] 1195 	pop	ar6
-      000CC8 D0 07            [24] 1196 	pop	ar7
-      000CCA 8B 82            [24] 1197 	mov	dpl,r3
-      000CCC 8C 83            [24] 1198 	mov	dph,r4
-      000CCE 8D F0            [24] 1199 	mov	b,r5
-      000CD0 EA               [12] 1200 	mov	a,r2
-      000CD1 12 0E 15         [24] 1201 	lcall	__gptrput
-                                   1202 ;	./src/N76_W25Qxx.c:221: for (i = 0; i < len; i++)
-      000CD4 0E               [12] 1203 	inc	r6
-      000CD5 BE 00 B5         [24] 1204 	cjne	r6,#0x00,00103$
-      000CD8 0F               [12] 1205 	inc	r7
-      000CD9 80 B2            [24] 1206 	sjmp	00103$
-      000CDB                       1207 00101$:
-                                   1208 ;	./src/N76_W25Qxx.c:225: setb(SPI_Px_SS, SPI_PIN_SS);
-      000CDB 43 90 02         [24] 1209 	orl	_p1,#0x02
-                                   1210 ;	./src/N76_W25Qxx.c:226: }
-      000CDE 22               [24] 1211 	ret
+      000F02                       1132 _W25Qxx_readBuff:
+      000F02 AC 82            [24] 1133 	mov	r4,dpl
+      000F04 AD 83            [24] 1134 	mov	r5,dph
+      000F06 AE F0            [24] 1135 	mov	r6,b
+      000F08 FF               [12] 1136 	mov	r7,a
+                                   1137 ;	./src/N76_W25Qxx.c:217: clrb(SPI_Px_SS, SPI_PIN_SS);
+      000F09 53 90 FD         [24] 1138 	anl	_p1,#0xfd
+                                   1139 ;	./src/N76_W25Qxx.c:218: SPI_transfer(W25Q_CMD_READ_DATA);
+      000F0C 75 82 03         [24] 1140 	mov	dpl, #0x03
+      000F0F C0 07            [24] 1141 	push	ar7
+      000F11 C0 06            [24] 1142 	push	ar6
+      000F13 C0 05            [24] 1143 	push	ar5
+      000F15 C0 04            [24] 1144 	push	ar4
+      000F17 12 07 97         [24] 1145 	lcall	_SPI_transfer
+      000F1A D0 04            [24] 1146 	pop	ar4
+      000F1C D0 05            [24] 1147 	pop	ar5
+      000F1E D0 06            [24] 1148 	pop	ar6
+      000F20 D0 07            [24] 1149 	pop	ar7
+                                   1150 ;	./src/N76_W25Qxx.c:219: W25Qxx_writeAddr(addr);
+      000F22 8C 82            [24] 1151 	mov	dpl, r4
+      000F24 8D 83            [24] 1152 	mov	dph, r5
+      000F26 8E F0            [24] 1153 	mov	b, r6
+      000F28 EF               [12] 1154 	mov	a, r7
+      000F29 12 0B B9         [24] 1155 	lcall	_W25Qxx_writeAddr
+                                   1156 ;	./src/N76_W25Qxx.c:221: for (i = 0; i < len; i++)
+      000F2C 7E 00            [12] 1157 	mov	r6,#0x00
+      000F2E 7F 00            [12] 1158 	mov	r7,#0x00
+      000F30                       1159 00103$:
+      000F30 8E 02            [24] 1160 	mov	ar2,r6
+      000F32 8F 03            [24] 1161 	mov	ar3,r7
+      000F34 7C 00            [12] 1162 	mov	r4,#0x00
+      000F36 7D 00            [12] 1163 	mov	r5,#0x00
+      000F38 C3               [12] 1164 	clr	c
+      000F39 EA               [12] 1165 	mov	a,r2
+      000F3A 95 43            [12] 1166 	subb	a,_W25Qxx_readBuff_PARM_3
+      000F3C EB               [12] 1167 	mov	a,r3
+      000F3D 95 44            [12] 1168 	subb	a,(_W25Qxx_readBuff_PARM_3 + 1)
+      000F3F EC               [12] 1169 	mov	a,r4
+      000F40 95 45            [12] 1170 	subb	a,(_W25Qxx_readBuff_PARM_3 + 2)
+      000F42 ED               [12] 1171 	mov	a,r5
+      000F43 95 46            [12] 1172 	subb	a,(_W25Qxx_readBuff_PARM_3 + 3)
+      000F45 50 37            [24] 1173 	jnc	00101$
+                                   1174 ;	./src/N76_W25Qxx.c:223: data[i] = SPI_transfer(0x00);
+      000F47 EE               [12] 1175 	mov	a,r6
+      000F48 25 40            [12] 1176 	add	a, _W25Qxx_readBuff_PARM_2
+      000F4A FB               [12] 1177 	mov	r3,a
+      000F4B EF               [12] 1178 	mov	a,r7
+      000F4C 35 41            [12] 1179 	addc	a, (_W25Qxx_readBuff_PARM_2 + 1)
+      000F4E FC               [12] 1180 	mov	r4,a
+      000F4F AD 42            [24] 1181 	mov	r5,(_W25Qxx_readBuff_PARM_2 + 2)
+      000F51 75 82 00         [24] 1182 	mov	dpl, #0x00
+      000F54 C0 07            [24] 1183 	push	ar7
+      000F56 C0 06            [24] 1184 	push	ar6
+      000F58 C0 05            [24] 1185 	push	ar5
+      000F5A C0 04            [24] 1186 	push	ar4
+      000F5C C0 03            [24] 1187 	push	ar3
+      000F5E 12 07 97         [24] 1188 	lcall	_SPI_transfer
+      000F61 AA 82            [24] 1189 	mov	r2, dpl
+      000F63 D0 03            [24] 1190 	pop	ar3
+      000F65 D0 04            [24] 1191 	pop	ar4
+      000F67 D0 05            [24] 1192 	pop	ar5
+      000F69 D0 06            [24] 1193 	pop	ar6
+      000F6B D0 07            [24] 1194 	pop	ar7
+      000F6D 8B 82            [24] 1195 	mov	dpl,r3
+      000F6F 8C 83            [24] 1196 	mov	dph,r4
+      000F71 8D F0            [24] 1197 	mov	b,r5
+      000F73 EA               [12] 1198 	mov	a,r2
+      000F74 12 10 BA         [24] 1199 	lcall	__gptrput
+                                   1200 ;	./src/N76_W25Qxx.c:221: for (i = 0; i < len; i++)
+      000F77 0E               [12] 1201 	inc	r6
+      000F78 BE 00 B5         [24] 1202 	cjne	r6,#0x00,00103$
+      000F7B 0F               [12] 1203 	inc	r7
+      000F7C 80 B2            [24] 1204 	sjmp	00103$
+      000F7E                       1205 00101$:
+                                   1206 ;	./src/N76_W25Qxx.c:225: setb(SPI_Px_SS, SPI_PIN_SS);
+      000F7E 43 90 02         [24] 1207 	orl	_p1,#0x02
+                                   1208 ;	./src/N76_W25Qxx.c:226: }
+      000F81 22               [24] 1209 	ret
+                                   1210 ;------------------------------------------------------------
+                                   1211 ;Allocation info for local variables in function 'W25Qxx_writeVerify'
                                    1212 ;------------------------------------------------------------
-                                   1213 ;Allocation info for local variables in function 'W25Qxx_writeVerify'
-                                   1214 ;------------------------------------------------------------
-                                   1215 ;i                         Allocated to registers r6 r7 
-                                   1216 ;u8Data                    Allocated to registers r5 
-                                   1217 ;------------------------------------------------------------
-                                   1218 ;	./src/N76_W25Qxx.c:228: uint8_t W25Qxx_writeVerify(void)
+                                   1213 ;i                         Allocated to registers r6 r7 
+                                   1214 ;u8Data                    Allocated to registers r5 
+                                   1215 ;------------------------------------------------------------
+                                   1216 ;	./src/N76_W25Qxx.c:228: uint8_t W25Qxx_writeVerify(void)
+                                   1217 ;	-----------------------------------------
+                                   1218 ;	 function W25Qxx_writeVerify
                                    1219 ;	-----------------------------------------
-                                   1220 ;	 function W25Qxx_writeVerify
-                                   1221 ;	-----------------------------------------
-      000CDF                       1222 _W25Qxx_writeVerify:
-                                   1223 ;	./src/N76_W25Qxx.c:233: clrb(SPI_Px_SS, SPI_PIN_SS);
-      000CDF 53 90 FD         [24] 1224 	anl	_p1,#0xfd
-                                   1225 ;	./src/N76_W25Qxx.c:235: SPI_transfer(W25Q_CMD_READ_DATA);
-      000CE2 75 82 03         [24] 1226 	mov	dpl,#0x03
-      000CE5 12 05 AF         [24] 1227 	lcall	_SPI_transfer
-                                   1228 ;	./src/N76_W25Qxx.c:236: SPI_transfer(0x00);
-      000CE8 75 82 00         [24] 1229 	mov	dpl,#0x00
-      000CEB 12 05 AF         [24] 1230 	lcall	_SPI_transfer
-                                   1231 ;	./src/N76_W25Qxx.c:237: SPI_transfer(0x00);
-      000CEE 75 82 00         [24] 1232 	mov	dpl,#0x00
-      000CF1 12 05 AF         [24] 1233 	lcall	_SPI_transfer
-                                   1234 ;	./src/N76_W25Qxx.c:238: SPI_transfer(0x00);
-      000CF4 75 82 00         [24] 1235 	mov	dpl,#0x00
-      000CF7 12 05 AF         [24] 1236 	lcall	_SPI_transfer
-                                   1237 ;	./src/N76_W25Qxx.c:240: for (i = 0; i < 256; i++)
-      000CFA 7E 00            [12] 1238 	mov	r6,#0x00
-      000CFC 7F 00            [12] 1239 	mov	r7,#0x00
-      000CFE                       1240 00104$:
-                                   1241 ;	./src/N76_W25Qxx.c:242: u8Data = SPI_transfer(0x00);
-      000CFE 75 82 00         [24] 1242 	mov	dpl,#0x00
-      000D01 C0 07            [24] 1243 	push	ar7
-      000D03 C0 06            [24] 1244 	push	ar6
-      000D05 12 05 AF         [24] 1245 	lcall	_SPI_transfer
-      000D08 AD 82            [24] 1246 	mov	r5,dpl
-      000D0A D0 06            [24] 1247 	pop	ar6
-      000D0C D0 07            [24] 1248 	pop	ar7
-                                   1249 ;	./src/N76_W25Qxx.c:244: if (u8Data != (uint8_t)i)
-      000D0E 8E 04            [24] 1250 	mov	ar4,r6
-      000D10 ED               [12] 1251 	mov	a,r5
-      000D11 B5 04 02         [24] 1252 	cjne	a,ar4,00120$
-      000D14 80 04            [24] 1253 	sjmp	00105$
-      000D16                       1254 00120$:
-                                   1255 ;	./src/N76_W25Qxx.c:246: return W25Qxx_ERR;
-      000D16 75 82 01         [24] 1256 	mov	dpl,#0x01
-      000D19 22               [24] 1257 	ret
-      000D1A                       1258 00105$:
-                                   1259 ;	./src/N76_W25Qxx.c:240: for (i = 0; i < 256; i++)
-      000D1A 0E               [12] 1260 	inc	r6
-      000D1B BE 00 01         [24] 1261 	cjne	r6,#0x00,00121$
-      000D1E 0F               [12] 1262 	inc	r7
-      000D1F                       1263 00121$:
-      000D1F 8F 05            [24] 1264 	mov	ar5,r7
-      000D21 74 FF            [12] 1265 	mov	a,#0x100 - 0x01
-      000D23 2D               [12] 1266 	add	a,r5
-      000D24 50 D8            [24] 1267 	jnc	00104$
-                                   1268 ;	./src/N76_W25Qxx.c:249: setb(SPI_Px_SS, SPI_PIN_SS);
-      000D26 43 90 02         [24] 1269 	orl	_p1,#0x02
-                                   1270 ;	./src/N76_W25Qxx.c:251: return W25Qxx_OK;
-      000D29 75 82 00         [24] 1271 	mov	dpl,#0x00
-                                   1272 ;	./src/N76_W25Qxx.c:252: }
-      000D2C 22               [24] 1273 	ret
-                                   1274 	.area CSEG    (CODE)
+      000F82                       1220 _W25Qxx_writeVerify:
+                                   1221 ;	./src/N76_W25Qxx.c:233: clrb(SPI_Px_SS, SPI_PIN_SS);
+      000F82 53 90 FD         [24] 1222 	anl	_p1,#0xfd
+                                   1223 ;	./src/N76_W25Qxx.c:235: SPI_transfer(W25Q_CMD_READ_DATA);
+      000F85 75 82 03         [24] 1224 	mov	dpl, #0x03
+      000F88 12 07 97         [24] 1225 	lcall	_SPI_transfer
+                                   1226 ;	./src/N76_W25Qxx.c:236: SPI_transfer(0x00);
+      000F8B 75 82 00         [24] 1227 	mov	dpl, #0x00
+      000F8E 12 07 97         [24] 1228 	lcall	_SPI_transfer
+                                   1229 ;	./src/N76_W25Qxx.c:237: SPI_transfer(0x00);
+      000F91 75 82 00         [24] 1230 	mov	dpl, #0x00
+      000F94 12 07 97         [24] 1231 	lcall	_SPI_transfer
+                                   1232 ;	./src/N76_W25Qxx.c:238: SPI_transfer(0x00);
+      000F97 75 82 00         [24] 1233 	mov	dpl, #0x00
+      000F9A 12 07 97         [24] 1234 	lcall	_SPI_transfer
+                                   1235 ;	./src/N76_W25Qxx.c:240: for (i = 0; i < 256; i++)
+      000F9D 7E 00            [12] 1236 	mov	r6,#0x00
+      000F9F 7F 00            [12] 1237 	mov	r7,#0x00
+      000FA1                       1238 00104$:
+                                   1239 ;	./src/N76_W25Qxx.c:242: u8Data = SPI_transfer(0x00);
+      000FA1 75 82 00         [24] 1240 	mov	dpl, #0x00
+      000FA4 C0 07            [24] 1241 	push	ar7
+      000FA6 C0 06            [24] 1242 	push	ar6
+      000FA8 12 07 97         [24] 1243 	lcall	_SPI_transfer
+      000FAB AD 82            [24] 1244 	mov	r5, dpl
+      000FAD D0 06            [24] 1245 	pop	ar6
+      000FAF D0 07            [24] 1246 	pop	ar7
+                                   1247 ;	./src/N76_W25Qxx.c:244: if (u8Data != (uint8_t)i)
+      000FB1 8E 04            [24] 1248 	mov	ar4,r6
+      000FB3 ED               [12] 1249 	mov	a,r5
+      000FB4 B5 04 02         [24] 1250 	cjne	a,ar4,00126$
+      000FB7 80 04            [24] 1251 	sjmp	00105$
+      000FB9                       1252 00126$:
+                                   1253 ;	./src/N76_W25Qxx.c:246: return W25Qxx_ERR;
+      000FB9 75 82 01         [24] 1254 	mov	dpl, #0x01
+      000FBC 22               [24] 1255 	ret
+      000FBD                       1256 00105$:
+                                   1257 ;	./src/N76_W25Qxx.c:240: for (i = 0; i < 256; i++)
+      000FBD 0E               [12] 1258 	inc	r6
+      000FBE BE 00 01         [24] 1259 	cjne	r6,#0x00,00127$
+      000FC1 0F               [12] 1260 	inc	r7
+      000FC2                       1261 00127$:
+      000FC2 8E 04            [24] 1262 	mov	ar4,r6
+      000FC4 8F 05            [24] 1263 	mov	ar5,r7
+      000FC6 74 FF            [12] 1264 	mov	a,#0x100 - 0x01
+      000FC8 2D               [12] 1265 	add	a,r5
+      000FC9 50 D6            [24] 1266 	jnc	00104$
+                                   1267 ;	./src/N76_W25Qxx.c:249: setb(SPI_Px_SS, SPI_PIN_SS);
+      000FCB 43 90 02         [24] 1268 	orl	_p1,#0x02
+                                   1269 ;	./src/N76_W25Qxx.c:251: return W25Qxx_OK;
+      000FCE 75 82 00         [24] 1270 	mov	dpl, #0x00
+                                   1271 ;	./src/N76_W25Qxx.c:252: }
+      000FD1 22               [24] 1272 	ret
+                                   1273 	.area CSEG    (CODE)
+                                   1274 	.area CONST   (CODE)
                                    1275 	.area CONST   (CODE)
-                                   1276 	.area CONST   (CODE)
-      001093                       1277 ___str_0:
-      001093 0A                    1278 	.db 0x0a
-      001094 2A 20 20 53 50 49 20  1279 	.ascii "*  SPI Error, please check the connection between MCU and SP"
+      0012EF                       1276 ___str_0:
+      0012EF 0A                    1277 	.db 0x0a
+      0012F0 2A 20 20 53 50 49 20  1278 	.ascii "*  SPI Error, please check the connection between MCU and SP"
              45 72 72 6F 72 2C 20
              70 6C 65 61 73 65 20
              63 68 65 63 6B 20 74
@@ -1285,8 +1284,8 @@
              62 65 74 77 65 65 6E
              20 4D 43 55 20 61 6E
              64 20 53 50
-      0010D0 49 20 46 6C 61 73 68  1280 	.ascii "I Flash"
-      0010D7 00                    1281 	.db 0x00
-                                   1282 	.area CSEG    (CODE)
-                                   1283 	.area XINIT   (CODE)
-                                   1284 	.area CABS    (ABS,CODE)
+      00132C 49 20 46 6C 61 73 68  1279 	.ascii "I Flash"
+      001333 00                    1280 	.db 0x00
+                                   1281 	.area CSEG    (CODE)
+                                   1282 	.area XINIT   (CODE)
+                                   1283 	.area CABS    (ABS,CODE)

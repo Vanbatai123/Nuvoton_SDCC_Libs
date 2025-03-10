@@ -25,7 +25,7 @@ uint8_x timeOut(void)
     return 0;
 }
 
-void I2C_begin()
+void I2C_begin(void)
 {
     P13_OpenDrain_Mode;
     P14_OpenDrain_Mode;
@@ -209,7 +209,7 @@ uint8_t I2C_read(void)
     return value;
 }
 
-int16_t I2C_available()
+int16_t I2C_available(void)
 {
     return rxBufferLength - rxBufferIndex;
 }

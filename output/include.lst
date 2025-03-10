@@ -1,6 +1,6 @@
                                       1 ;--------------------------------------------------------
-                                      2 ; File Created by SDCC : free open source ANSI-C Compiler
-                                      3 ; Version 4.2.0 #13081 (Linux)
+                                      2 ; File Created by SDCC : free open source ISO C Compiler 
+                                      3 ; Version 4.4.0 #14620 (Linux)
                                       4 ;--------------------------------------------------------
                                       5 	.module include
                                       6 	.optsdcc -mmcs51 --model-small
@@ -323,7 +323,7 @@
                                     323 ;--------------------------------------------------------
                                     324 	.area PSEG    (PAG,XDATA)
                                     325 ;--------------------------------------------------------
-                                    326 ; external ram data
+                                    326 ; uninitialized external ram data
                                     327 ;--------------------------------------------------------
                                     328 	.area XSEG    (XDATA)
                                     329 ;--------------------------------------------------------
@@ -331,7 +331,7 @@
                                     331 ;--------------------------------------------------------
                                     332 	.area XABS    (ABS,XDATA)
                                     333 ;--------------------------------------------------------
-                                    334 ; external initialized ram data
+                                    334 ; initialized external ram data
                                     335 ;--------------------------------------------------------
                                     336 	.area XISEG   (XDATA)
                                     337 	.area HOME    (CODE)
@@ -365,7 +365,7 @@
                                     365 ;------------------------------------------------------------
                                     366 ;__ms                      Allocated to registers r4 r5 r6 r7 
                                     367 ;------------------------------------------------------------
-                                    368 ;	./src/include.c:10: void _delay_ms(uint32_t  __ms)
+                                    368 ;	./src/include.c:9: void _delay_ms(uint32_t __ms)
                                     369 ;	-----------------------------------------
                                     370 ;	 function _delay_ms
                                     371 ;	-----------------------------------------
@@ -382,22 +382,22 @@
       000002 AD 83            [24]  382 	mov	r5,dph
       000004 AE F0            [24]  383 	mov	r6,b
       000006 FF               [12]  384 	mov	r7,a
-                                    385 ;	./src/include.c:12: T3CON |= 0x07;                           		//Timer3 Clock = Fsys/128
+                                    385 ;	./src/include.c:11: T3CON |= 0x07; // Timer3 Clock = Fsys/128
       000007 43 C4 07         [24]  386 	orl	_t3con,#0x07
-                                    387 ;	./src/include.c:13: set_TR3;                                		//Trigger Timer3 start run
+                                    387 ;	./src/include.c:12: set_TR3;       // Trigger Timer3 start run
       00000A 43 C4 08         [24]  388 	orl	_t3con,#0x08
-                                    389 ;	./src/include.c:14: while (__ms != 0)
+                                    389 ;	./src/include.c:13: while (__ms != 0)
       00000D                        390 00104$:
       00000D EC               [12]  391 	mov	a,r4
       00000E 4D               [12]  392 	orl	a,r5
       00000F 4E               [12]  393 	orl	a,r6
       000010 4F               [12]  394 	orl	a,r7
       000011 60 23            [24]  395 	jz	00106$
-                                    396 ;	./src/include.c:16: RL3 = 0x83; //Find  define in "Function_define.h" "TIMER VALUE"
+                                    396 ;	./src/include.c:15: RL3 = 0x83; // Find  define in "Function_define.h" "TIMER VALUE"
       000013 75 C5 83         [24]  397 	mov	_rl3,#0x83
-                                    398 ;	./src/include.c:17: RH3 = 0xFF;
+                                    398 ;	./src/include.c:16: RH3 = 0xFF;
       000016 75 C6 FF         [24]  399 	mov	_rh3,#0xff
-                                    400 ;	./src/include.c:18: while (inbit(T3CON,TF3) != 1);		//Check Timer3 Time-Out Flag
+                                    400 ;	./src/include.c:17: while (inbit(T3CON, TF3) != 1)
       000019                        401 00101$:
       000019 74 10            [12]  402 	mov	a,#0x10
       00001B 55 C4            [12]  403 	anl	a,_t3con
@@ -409,16 +409,16 @@
       000024 53 C4 EF         [24]  409 	anl	_t3con,#0xef
                                     410 ;	./src/include.c:22: __ms--;
       000027 1C               [12]  411 	dec	r4
-      000028 BC FF 09         [24]  412 	cjne	r4,#0xff,00129$
+      000028 BC FF 09         [24]  412 	cjne	r4,#0xff,00137$
       00002B 1D               [12]  413 	dec	r5
-      00002C BD FF 05         [24]  414 	cjne	r5,#0xff,00129$
+      00002C BD FF 05         [24]  414 	cjne	r5,#0xff,00137$
       00002F 1E               [12]  415 	dec	r6
-      000030 BE FF 01         [24]  416 	cjne	r6,#0xff,00129$
+      000030 BE FF 01         [24]  416 	cjne	r6,#0xff,00137$
       000033 1F               [12]  417 	dec	r7
-      000034                        418 00129$:
+      000034                        418 00137$:
       000034 80 D7            [24]  419 	sjmp	00104$
       000036                        420 00106$:
-                                    421 ;	./src/include.c:24: clr_TR3;                                		//Stop Timer3
+                                    421 ;	./src/include.c:24: clr_TR3; // Stop Timer3
       000036 53 C4 F7         [24]  422 	anl	_t3con,#0xf7
                                     423 ;	./src/include.c:25: }
       000039 22               [24]  424 	ret
@@ -436,14 +436,14 @@
       00003D 85 83*01         [24]  436 	mov	(__mullong_PARM_2 + 1),dph
       000040 85 F0*02         [24]  437 	mov	(__mullong_PARM_2 + 2),b
       000043 F5*03            [12]  438 	mov	(__mullong_PARM_2 + 3),a
-                                    439 ;	./src/include.c:29: _us = _us * 5 / 4+1;
-      000045 90 00 05         [24]  440 	mov	dptr,#(0x05&0x00ff)
+                                    439 ;	./src/include.c:29: _us = _us * 5 / 4 + 1;
+      000045 90 00 05         [24]  440 	mov	dptr,#0x0005
       000048 E4               [12]  441 	clr	a
       000049 F5 F0            [12]  442 	mov	b,a
       00004B 12r00r00         [24]  443 	lcall	__mullong
-      00004E AC 82            [24]  444 	mov	r4,dpl
-      000050 AD 83            [24]  445 	mov	r5,dph
-      000052 AE F0            [24]  446 	mov	r6,b
+      00004E AC 82            [24]  444 	mov	r4, dpl
+      000050 AD 83            [24]  445 	mov	r5, dph
+      000052 AE F0            [24]  446 	mov	r6, b
       000054 C3               [12]  447 	clr	c
       000055 13               [12]  448 	rrc	a
       000056 FF               [12]  449 	mov	r7,a
@@ -470,29 +470,29 @@
       00006B 13               [12]  470 	rrc	a
       00006C FC               [12]  471 	mov	r4,a
       00006D 0C               [12]  472 	inc	r4
-      00006E BC 00 09         [24]  473 	cjne	r4,#0x00,00112$
+      00006E BC 00 09         [24]  473 	cjne	r4,#0x00,00114$
       000071 0D               [12]  474 	inc	r5
-      000072 BD 00 05         [24]  475 	cjne	r5,#0x00,00112$
+      000072 BD 00 05         [24]  475 	cjne	r5,#0x00,00114$
       000075 0E               [12]  476 	inc	r6
-      000076 BE 00 01         [24]  477 	cjne	r6,#0x00,00112$
+      000076 BE 00 01         [24]  477 	cjne	r6,#0x00,00114$
       000079 0F               [12]  478 	inc	r7
-      00007A                        479 00112$:
+      00007A                        479 00114$:
                                     480 ;	./src/include.c:30: while (--_us)
       00007A                        481 00101$:
       00007A 1C               [12]  482 	dec	r4
-      00007B BC FF 09         [24]  483 	cjne	r4,#0xff,00113$
+      00007B BC FF 09         [24]  483 	cjne	r4,#0xff,00115$
       00007E 1D               [12]  484 	dec	r5
-      00007F BD FF 05         [24]  485 	cjne	r5,#0xff,00113$
+      00007F BD FF 05         [24]  485 	cjne	r5,#0xff,00115$
       000082 1E               [12]  486 	dec	r6
-      000083 BE FF 01         [24]  487 	cjne	r6,#0xff,00113$
+      000083 BE FF 01         [24]  487 	cjne	r6,#0xff,00115$
       000086 1F               [12]  488 	dec	r7
-      000087                        489 00113$:
+      000087                        489 00115$:
       000087 EC               [12]  490 	mov	a,r4
       000088 4D               [12]  491 	orl	a,r5
       000089 4E               [12]  492 	orl	a,r6
       00008A 4F               [12]  493 	orl	a,r7
       00008B 70 ED            [24]  494 	jnz	00101$
-                                    495 ;	./src/include.c:35: }
+                                    495 ;	./src/include.c:34: }
       00008D 22               [24]  496 	ret
                                     497 	.area CSEG    (CODE)
                                     498 	.area CONST   (CODE)

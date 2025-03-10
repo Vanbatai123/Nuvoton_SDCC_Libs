@@ -1,6 +1,6 @@
 ;--------------------------------------------------------
-; File Created by SDCC : free open source ANSI-C Compiler
-; Version 4.2.0 #13081 (Linux)
+; File Created by SDCC : free open source ISO C Compiler 
+; Version 4.4.0 #14620 (Linux)
 ;--------------------------------------------------------
 	.module include
 	.optsdcc -mmcs51 --model-small
@@ -323,7 +323,7 @@ _eiph1	=	0x00ff
 ;--------------------------------------------------------
 	.area PSEG    (PAG,XDATA)
 ;--------------------------------------------------------
-; external ram data
+; uninitialized external ram data
 ;--------------------------------------------------------
 	.area XSEG    (XDATA)
 ;--------------------------------------------------------
@@ -331,7 +331,7 @@ _eiph1	=	0x00ff
 ;--------------------------------------------------------
 	.area XABS    (ABS,XDATA)
 ;--------------------------------------------------------
-; external initialized ram data
+; initialized external ram data
 ;--------------------------------------------------------
 	.area XISEG   (XDATA)
 	.area HOME    (CODE)
@@ -365,7 +365,7 @@ _eiph1	=	0x00ff
 ;------------------------------------------------------------
 ;__ms                      Allocated to registers r4 r5 r6 r7 
 ;------------------------------------------------------------
-;	./src/include.c:10: void _delay_ms(uint32_t  __ms)
+;	./src/include.c:9: void _delay_ms(uint32_t __ms)
 ;	-----------------------------------------
 ;	 function _delay_ms
 ;	-----------------------------------------
@@ -382,22 +382,22 @@ __delay_ms:
 	mov	r5,dph
 	mov	r6,b
 	mov	r7,a
-;	./src/include.c:12: T3CON |= 0x07;                           		//Timer3 Clock = Fsys/128
+;	./src/include.c:11: T3CON |= 0x07; // Timer3 Clock = Fsys/128
 	orl	_t3con,#0x07
-;	./src/include.c:13: set_TR3;                                		//Trigger Timer3 start run
+;	./src/include.c:12: set_TR3;       // Trigger Timer3 start run
 	orl	_t3con,#0x08
-;	./src/include.c:14: while (__ms != 0)
+;	./src/include.c:13: while (__ms != 0)
 00104$:
 	mov	a,r4
 	orl	a,r5
 	orl	a,r6
 	orl	a,r7
 	jz	00106$
-;	./src/include.c:16: RL3 = 0x83; //Find  define in "Function_define.h" "TIMER VALUE"
+;	./src/include.c:15: RL3 = 0x83; // Find  define in "Function_define.h" "TIMER VALUE"
 	mov	_rl3,#0x83
-;	./src/include.c:17: RH3 = 0xFF;
+;	./src/include.c:16: RH3 = 0xFF;
 	mov	_rh3,#0xff
-;	./src/include.c:18: while (inbit(T3CON,TF3) != 1);		//Check Timer3 Time-Out Flag
+;	./src/include.c:17: while (inbit(T3CON, TF3) != 1)
 00101$:
 	mov	a,#0x10
 	anl	a,_t3con
@@ -409,16 +409,16 @@ __delay_ms:
 	anl	_t3con,#0xef
 ;	./src/include.c:22: __ms--;
 	dec	r4
-	cjne	r4,#0xff,00129$
+	cjne	r4,#0xff,00137$
 	dec	r5
-	cjne	r5,#0xff,00129$
+	cjne	r5,#0xff,00137$
 	dec	r6
-	cjne	r6,#0xff,00129$
+	cjne	r6,#0xff,00137$
 	dec	r7
-00129$:
+00137$:
 	sjmp	00104$
 00106$:
-;	./src/include.c:24: clr_TR3;                                		//Stop Timer3
+;	./src/include.c:24: clr_TR3; // Stop Timer3
 	anl	_t3con,#0xf7
 ;	./src/include.c:25: }
 	ret
@@ -436,14 +436,14 @@ __delay_us:
 	mov	(__mullong_PARM_2 + 1),dph
 	mov	(__mullong_PARM_2 + 2),b
 	mov	(__mullong_PARM_2 + 3),a
-;	./src/include.c:29: _us = _us * 5 / 4+1;
-	mov	dptr,#(0x05&0x00ff)
+;	./src/include.c:29: _us = _us * 5 / 4 + 1;
+	mov	dptr,#0x0005
 	clr	a
 	mov	b,a
 	lcall	__mullong
-	mov	r4,dpl
-	mov	r5,dph
-	mov	r6,b
+	mov	r4, dpl
+	mov	r5, dph
+	mov	r6, b
 	clr	c
 	rrc	a
 	mov	r7,a
@@ -470,29 +470,29 @@ __delay_us:
 	rrc	a
 	mov	r4,a
 	inc	r4
-	cjne	r4,#0x00,00112$
+	cjne	r4,#0x00,00114$
 	inc	r5
-	cjne	r5,#0x00,00112$
+	cjne	r5,#0x00,00114$
 	inc	r6
-	cjne	r6,#0x00,00112$
+	cjne	r6,#0x00,00114$
 	inc	r7
-00112$:
+00114$:
 ;	./src/include.c:30: while (--_us)
 00101$:
 	dec	r4
-	cjne	r4,#0xff,00113$
+	cjne	r4,#0xff,00115$
 	dec	r5
-	cjne	r5,#0xff,00113$
+	cjne	r5,#0xff,00115$
 	dec	r6
-	cjne	r6,#0xff,00113$
+	cjne	r6,#0xff,00115$
 	dec	r7
-00113$:
+00115$:
 	mov	a,r4
 	orl	a,r5
 	orl	a,r6
 	orl	a,r7
 	jnz	00101$
-;	./src/include.c:35: }
+;	./src/include.c:34: }
 	ret
 	.area CSEG    (CODE)
 	.area CONST   (CODE)

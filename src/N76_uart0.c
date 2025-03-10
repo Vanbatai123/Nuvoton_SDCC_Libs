@@ -132,7 +132,7 @@ void UART0_attachInterrupt(void)
     set_ES; // enable UART0 interrupt
 }
 // // interrupt deinit
-void UART0_detachInterrupt()
+void UART0_detachInterrupt(void)
 {
     clr_REN;
     clr_ES; // disable UART0 interrupt

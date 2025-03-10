@@ -90,10 +90,10 @@ void SPI_setClockDivider(uint8_t clockDiv)
     SPCR = (SPCR & ~SPI_CLOCK_MASK) | (clockDiv & SPI_CLOCK_MASK);
 }
 
-void SPI_attachInterrupt()
+void SPI_attachInterrupt(void)
 {
 }
 
-void SPI_aetachInterrupt()
+void SPI_aetachInterrupt(void)
 {
 }

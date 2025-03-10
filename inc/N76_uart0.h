@@ -23,7 +23,7 @@ void UART0_println(char *str);
 void UART0_printNum(int32_t num, uint8_t base);
 void UART0_printNumln(long num, uint8_t base);
 void UART0_attachInterrupt(void);
-void UART0_detachInterrupt();
+void UART0_detachInterrupt(void);
 int UART0_available(void);
 int UART0_read(void);
 ISR(UART0_INT_FUCTION, INTERRUPT_UART0);

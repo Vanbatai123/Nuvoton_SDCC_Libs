@@ -1,6 +1,6 @@
 ;--------------------------------------------------------
-; File Created by SDCC : free open source ANSI-C Compiler
-; Version 4.2.0 #13081 (Linux)
+; File Created by SDCC : free open source ISO C Compiler 
+; Version 4.4.0 #14620 (Linux)
 ;--------------------------------------------------------
 	.module N76_Flash
 	.optsdcc -mmcs51 --model-small
@@ -331,7 +331,7 @@ _APROM_write_byte_PARM_2:
 ;--------------------------------------------------------
 	.area PSEG    (PAG,XDATA)
 ;--------------------------------------------------------
-; external ram data
+; uninitialized external ram data
 ;--------------------------------------------------------
 	.area XSEG    (XDATA)
 ;--------------------------------------------------------
@@ -339,7 +339,7 @@ _APROM_write_byte_PARM_2:
 ;--------------------------------------------------------
 	.area XABS    (ABS,XDATA)
 ;--------------------------------------------------------
-; external initialized ram data
+; initialized external ram data
 ;--------------------------------------------------------
 	.area XISEG   (XDATA)
 	.area HOME    (CODE)
@@ -428,8 +428,8 @@ _APROM_read_2byte:
 ;	 function APROM_write_byte
 ;	-----------------------------------------
 _APROM_write_byte:
-	mov	r6,dpl
-	mov	r7,dph
+	mov	r6, dpl
+	mov	r7, dph
 ;	./src/N76_Flash.c:30: set_IAPEN; // enable IAP
 	anl	_ie,#0x7f
 	mov	_ta,#0xaa
@@ -446,7 +446,7 @@ _APROM_write_byte:
 	mov	_iapcn,#0x21
 ;	./src/N76_Flash.c:34: IAPAH = (uint8_t)((addr) >> 8);
 	mov	_iapah,r7
-;	./src/N76_Flash.c:35: IAPAL = (uint8_t)((addr)&0xFF);
+;	./src/N76_Flash.c:35: IAPAL = (uint8_t)((addr) & 0xFF);
 	mov	_iapal,r6
 ;	./src/N76_Flash.c:36: IAPFD = data;
 	mov	_iapfd,_APROM_write_byte_PARM_2
@@ -480,19 +480,19 @@ _APROM_write_byte:
 ;	 function Erase_APROM
 ;	-----------------------------------------
 _Erase_APROM:
-	mov	r6,dpl
-	mov	r7,dph
-;	./src/N76_Flash.c:47: set_IAPEN; 					// enable IAP
+	mov	r6, dpl
+	mov	r7, dph
+;	./src/N76_Flash.c:47: set_IAPEN;    // enable IAP
 	anl	_ie,#0x7f
 	mov	_ta,#0xaa
 	mov	_ta,#0x55
 	orl	_chpcon,#0x01
 	orl	_ie,#0x80
-;	./src/N76_Flash.c:48: IAPFD = 0xFF;				// IMPORTANT !! To erase function must setting IAPFD = 0xFF 
+;	./src/N76_Flash.c:48: IAPFD = 0xFF; // IMPORTANT !! To erase function must setting IAPFD = 0xFF
 	mov	_iapfd,#0xff
 ;	./src/N76_Flash.c:49: IAPCN = PAGE_ERASE_AP;
 	mov	_iapcn,#0x22
-;	./src/N76_Flash.c:50: set_APUEN;			 		// enable IAP updated
+;	./src/N76_Flash.c:50: set_APUEN; // enable IAP updated
 	anl	_ie,#0x7f
 	mov	_ta,#0xaa
 	mov	_ta,#0x55
@@ -502,7 +502,7 @@ _Erase_APROM:
 	mov	_iapah,r7
 ;	./src/N76_Flash.c:53: IAPAL = (uint8_t)((addr) & 0xFF);
 	mov	_iapal,r6
-;	./src/N76_Flash.c:55: set_IAPGO;					// Trigger_IAP();
+;	./src/N76_Flash.c:55: set_IAPGO; // Trigger_IAP();
 	anl	_ie,#0x7f
 	mov	_ta,#0xaa
 	mov	_ta,#0x55

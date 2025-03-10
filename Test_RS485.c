@@ -12,12 +12,12 @@ void fWrite(const byte what)
     UART0_putChar(what);
 }
 
-int fAvailable()
+int fAvailable(void)
 {
     return UART0_available();
 }
 
-int fRead()
+int fRead(void)
 {
     return UART0_read();
 }

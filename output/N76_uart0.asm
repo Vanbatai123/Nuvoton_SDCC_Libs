@@ -1,6 +1,6 @@
 ;--------------------------------------------------------
-; File Created by SDCC : free open source ANSI-C Compiler
-; Version 4.2.0 #13081 (Linux)
+; File Created by SDCC : free open source ISO C Compiler 
+; Version 4.4.0 #14620 (Linux)
 ;--------------------------------------------------------
 	.module N76_uart0
 	.optsdcc -mmcs51 --model-small
@@ -144,6 +144,9 @@
 	.globl _dpl
 	.globl _sp
 	.globl _p0
+	.globl __rx_buffer
+	.globl __rx_buffer_tail
+	.globl __rx_buffer_head
 	.globl _UART0_printNumln_PARM_2
 	.globl _UART0_printNum_PARM_2
 	.globl _UART0_begin
@@ -152,6 +155,11 @@
 	.globl _UART0_println
 	.globl _UART0_printNum
 	.globl _UART0_printNumln
+	.globl _UART0_available
+	.globl _UART0_read
+	.globl _UART0_attachInterrupt
+	.globl _UART0_detachInterrupt
+	.globl _UART0_INT_FUCTION
 ;--------------------------------------------------------
 ; special function registers
 ;--------------------------------------------------------
@@ -309,7 +317,7 @@ _eiph1	=	0x00ff
 	.area DSEG    (DATA)
 _UART0_printNum_PARM_2:
 	.ds 1
-_UART0_printNum_i_131072_37:
+_UART0_printNum_i_20000_42:
 	.ds 1
 _UART0_printNum_sloc0_1_0:
 	.ds 4
@@ -320,6 +328,7 @@ _UART0_printNumln_PARM_2:
 ;--------------------------------------------------------
 ; overlayable items in internal ram
 ;--------------------------------------------------------
+	.area	OSEG    (OVR,DATA)
 	.area	OSEG    (OVR,DATA)
 	.area	OSEG    (OVR,DATA)
 ;--------------------------------------------------------
@@ -340,17 +349,23 @@ _UART0_printNumln_PARM_2:
 ;--------------------------------------------------------
 	.area PSEG    (PAG,XDATA)
 ;--------------------------------------------------------
-; external ram data
+; uninitialized external ram data
 ;--------------------------------------------------------
 	.area XSEG    (XDATA)
-_UART0_printNum_dis_65536_31:
+__rx_buffer_head::
+	.ds 1
+__rx_buffer_tail::
+	.ds 1
+__rx_buffer::
+	.ds 16
+_UART0_printNum_dis_10000_36:
 	.ds 20
 ;--------------------------------------------------------
 ; absolute external ram data
 ;--------------------------------------------------------
 	.area XABS    (ABS,XDATA)
 ;--------------------------------------------------------
-; external initialized ram data
+; initialized external ram data
 ;--------------------------------------------------------
 	.area XISEG   (XDATA)
 	.area HOME    (CODE)
@@ -384,7 +399,7 @@ _UART0_printNum_dis_65536_31:
 ;------------------------------------------------------------
 ;baud                      Allocated to registers r7 
 ;------------------------------------------------------------
-;	./src/N76_uart0.c:11: void UART0_begin(uint8_t baud)
+;	./src/N76_uart0.c:15: void UART0_begin(uint8_t baud)
 ;	-----------------------------------------
 ;	 function UART0_begin
 ;	-----------------------------------------
@@ -397,54 +412,54 @@ _UART0_begin:
 	ar2 = 0x02
 	ar1 = 0x01
 	ar0 = 0x00
-	mov	r7,dpl
-;	./src/N76_uart0.c:13: P06_Quasi_Mode; // Setting UART pin as Quasi mode for transmit
+	mov	r7, dpl
+;	./src/N76_uart0.c:17: P06_Quasi_Mode; // Setting UART pin as Quasi mode for transmit
 	anl	_p0m1,#0xbf
 	anl	_p0m2,#0xbf
-;	./src/N76_uart0.c:14: P07_Quasi_Mode; // Setting UART pin as Quasi mode for transmit
+;	./src/N76_uart0.c:18: P07_Quasi_Mode; // Setting UART pin as Quasi mode for transmit
 	anl	_p0m1,#0x7f
 	anl	_p0m2,#0x7f
-;	./src/N76_uart0.c:16: TH1 = baud;	  // set baudrate
+;	./src/N76_uart0.c:20: TH1 = baud;   // set baudrate
 	mov	_th1,r7
-;	./src/N76_uart0.c:17: SCON = 0x50;  // UART0 Mode1,REN=1,TI=1
+;	./src/N76_uart0.c:21: SCON = 0x50;  // UART0 Mode1,REN=1,TI=1
 	mov	_scon,#0x50
-;	./src/N76_uart0.c:18: TMOD |= 0x20; // Timer1 Mode1
+;	./src/N76_uart0.c:22: TMOD |= 0x20; // Timer1 Mode1
 	orl	_tmod,#0x20
-;	./src/N76_uart0.c:19: set_SMOD;	  // UART0 Double Rate Enable
+;	./src/N76_uart0.c:23: set_SMOD;     // UART0 Double Rate Enable
 	orl	_pcon,#0x80
-;	./src/N76_uart0.c:20: set_T1M;
+;	./src/N76_uart0.c:24: set_T1M;
 	orl	_ckcon,#0x10
-;	./src/N76_uart0.c:21: clr_BRCK; // Serial port 0 baud rate clock source = Timer1
+;	./src/N76_uart0.c:25: clr_BRCK; // Serial port 0 baud rate clock source = Timer1
 	anl	_t3con,#0xdf
-;	./src/N76_uart0.c:22: set_TR1;
+;	./src/N76_uart0.c:26: set_TR1;
 	orl	_tcon,#0x40
-;	./src/N76_uart0.c:23: set_TI; // For printf function must setting TI = 1
+;	./src/N76_uart0.c:27: set_TI; // For printf function must setting TI = 1
 	orl	_scon,#0x02
-;	./src/N76_uart0.c:24: }
+;	./src/N76_uart0.c:28: }
 	ret
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'UART0_putChar'
 ;------------------------------------------------------------
 ;val                       Allocated to registers r7 
 ;------------------------------------------------------------
-;	./src/N76_uart0.c:25: void UART0_putChar(uint8_t val)
+;	./src/N76_uart0.c:30: void UART0_putChar(uint8_t val)
 ;	-----------------------------------------
 ;	 function UART0_putChar
 ;	-----------------------------------------
 _UART0_putChar:
-	mov	r7,dpl
-;	./src/N76_uart0.c:27: clr_TI;
+	mov	r7, dpl
+;	./src/N76_uart0.c:32: clr_TI;
 	anl	_scon,#0xfd
-;	./src/N76_uart0.c:28: SBUF = val;
+;	./src/N76_uart0.c:33: SBUF = val;
 	mov	_sbuf,r7
-;	./src/N76_uart0.c:29: while (inbit(SCON, TI) == 0)
+;	./src/N76_uart0.c:34: while (inbit(SCON, TI) == 0)
 00101$:
 	mov	a,#0x02
 	anl	a,_scon
 	clr	c
 	rrc	a
 	jz	00101$
-;	./src/N76_uart0.c:31: }
+;	./src/N76_uart0.c:36: }
 	ret
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'UART0_print'
@@ -452,22 +467,22 @@ _UART0_putChar:
 ;str                       Allocated to registers r5 r6 r7 
 ;i                         Allocated to registers r4 
 ;------------------------------------------------------------
-;	./src/N76_uart0.c:33: void UART0_print(char *str)
+;	./src/N76_uart0.c:38: void UART0_print(char *str)
 ;	-----------------------------------------
 ;	 function UART0_print
 ;	-----------------------------------------
 _UART0_print:
-	mov	r5,dpl
-	mov	r6,dph
-	mov	r7,b
-;	./src/N76_uart0.c:36: while (str[i] != '\0')
+	mov	r5, dpl
+	mov	r6, dph
+	mov	r7, b
+;	./src/N76_uart0.c:41: while (str[i] != '\0')
 	mov	r4,#0x00
 00101$:
 	mov	a,r4
-	add	a,r5
+	add	a, r5
 	mov	r1,a
 	clr	a
-	addc	a,r6
+	addc	a, r6
 	mov	r2,a
 	mov	ar3,r7
 	mov	dpl,r1
@@ -475,12 +490,12 @@ _UART0_print:
 	mov	b,r3
 	lcall	__gptrget
 	jz	00104$
-;	./src/N76_uart0.c:37: UART0_putChar(str[i++]);
+;	./src/N76_uart0.c:42: UART0_putChar(str[i++]);
 	mov	a,r4
-	add	a,r5
+	add	a, r5
 	mov	r1,a
 	clr	a
-	addc	a,r6
+	addc	a, r6
 	mov	r2,a
 	mov	ar3,r7
 	inc	r4
@@ -500,38 +515,38 @@ _UART0_print:
 	pop	ar7
 	sjmp	00101$
 00104$:
-;	./src/N76_uart0.c:38: }
+;	./src/N76_uart0.c:43: }
 	ret
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'UART0_println'
 ;------------------------------------------------------------
 ;str                       Allocated to registers r5 r6 r7 
 ;------------------------------------------------------------
-;	./src/N76_uart0.c:40: void UART0_println(char *str)
+;	./src/N76_uart0.c:45: void UART0_println(char *str)
 ;	-----------------------------------------
 ;	 function UART0_println
 ;	-----------------------------------------
 _UART0_println:
-;	./src/N76_uart0.c:42: UART0_print(str);
+;	./src/N76_uart0.c:47: UART0_print(str);
 	lcall	_UART0_print
-;	./src/N76_uart0.c:43: UART0_print("\r\n");
+;	./src/N76_uart0.c:48: UART0_print("\r\n");
 	mov	dptr,#___str_0
-	mov	b,#0x80
-;	./src/N76_uart0.c:44: }
+	mov	b, #0x80
+;	./src/N76_uart0.c:49: }
 	ljmp	_UART0_print
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'UART0_printNum'
 ;------------------------------------------------------------
 ;base                      Allocated with name '_UART0_printNum_PARM_2'
 ;num                       Allocated to registers r4 r5 r6 r7 
-;max                       Allocated to registers r6 
+;max                       Allocated to registers r5 
 ;flag                      Allocated to registers r2 
-;i                         Allocated with name '_UART0_printNum_i_131072_37'
+;i                         Allocated with name '_UART0_printNum_i_20000_42'
 ;sloc0                     Allocated with name '_UART0_printNum_sloc0_1_0'
 ;sloc1                     Allocated with name '_UART0_printNum_sloc1_1_0'
-;dis                       Allocated with name '_UART0_printNum_dis_65536_31'
+;dis                       Allocated with name '_UART0_printNum_dis_10000_36'
 ;------------------------------------------------------------
-;	./src/N76_uart0.c:46: void UART0_printNum(int32_t num, uint8_t base)
+;	./src/N76_uart0.c:51: void UART0_printNum(int32_t num, uint8_t base)
 ;	-----------------------------------------
 ;	 function UART0_printNum
 ;	-----------------------------------------
@@ -540,8 +555,8 @@ _UART0_printNum:
 	mov	r5,dph
 	mov	r6,b
 	mov	r7,a
-;	./src/N76_uart0.c:49: int8_t max = 0, flag = 0; // max: index of dis array, flag: = 1 if negative
-;	./src/N76_uart0.c:51: if (num == 0) // input 0
+;	./src/N76_uart0.c:54: int8_t max = 0, flag = 0; // max: index of dis array, flag: = 1 if negative
+;	./src/N76_uart0.c:56: if (num == 0) // input 0
 	clr	a
 	mov	r3,a
 	mov	r2,a
@@ -550,17 +565,17 @@ _UART0_printNum:
 	orl	a,r6
 	orl	a,r7
 	jnz	00104$
-;	./src/N76_uart0.c:53: dis[max++] = '0';
+;	./src/N76_uart0.c:58: dis[max++] = '0';
 	mov	r3,#0x01
-	mov	dptr,#_UART0_printNum_dis_65536_31
+	mov	dptr,#_UART0_printNum_dis_10000_36
 	mov	a,#0x30
 	movx	@dptr,a
 	sjmp	00131$
 00104$:
-;	./src/N76_uart0.c:55: else if (num < 0) // negative number
+;	./src/N76_uart0.c:60: else if (num < 0) // negative number
 	mov	a,r7
 	jnb	acc.7,00131$
-;	./src/N76_uart0.c:57: num = 0 - num;
+;	./src/N76_uart0.c:62: num = 0 - num;
 	clr	c
 	clr	a
 	subb	a,r4
@@ -574,9 +589,9 @@ _UART0_printNum:
 	clr	a
 	subb	a,r7
 	mov	r7,a
-;	./src/N76_uart0.c:58: flag = 1;
+;	./src/N76_uart0.c:63: flag = 1;
 	mov	r2,#0x01
-;	./src/N76_uart0.c:60: while (num > 0) // convert to base number and add to dis array
+;	./src/N76_uart0.c:65: while (num > 0) // convert to base number and add to dis array
 00131$:
 00109$:
 	clr	c
@@ -590,10 +605,10 @@ _UART0_printNum:
 	mov	b,r7
 	xrl	b,#0x80
 	subb	a,b
-	jc	00197$
+	jc	00208$
 	ljmp	00138$
-00197$:
-;	./src/N76_uart0.c:62: if (num % base >= 10)
+00208$:
+;	./src/N76_uart0.c:67: if (num % base >= 10)
 	mov	_UART0_printNum_sloc0_1_0,_UART0_printNum_PARM_2
 	mov	(_UART0_printNum_sloc0_1_0 + 1),#0x00
 	mov	(_UART0_printNum_sloc0_1_0 + 2),#0x00
@@ -602,10 +617,10 @@ _UART0_printNum:
 	mov	(__modslong_PARM_2 + 1),(_UART0_printNum_sloc0_1_0 + 1)
 	mov	(__modslong_PARM_2 + 2),(_UART0_printNum_sloc0_1_0 + 2)
 	mov	(__modslong_PARM_2 + 3),(_UART0_printNum_sloc0_1_0 + 3)
-	mov	dpl,r4
-	mov	dph,r5
-	mov	b,r6
-	mov	a,r7
+	mov	dpl, r4
+	mov	dph, r5
+	mov	b, r6
+	mov	a, r7
 	push	ar7
 	push	ar6
 	push	ar5
@@ -634,70 +649,68 @@ _UART0_printNum:
 	xrl	a,#0x80
 	subb	a,#0x80
 	jc	00107$
-;	./src/N76_uart0.c:63: dis[max] = num % base + 55;
+;	./src/N76_uart0.c:68: dis[max] = num % base + 55;
 	mov	a,r3
 	mov	r0,a
 	rlc	a
 	subb	a,acc
 	mov	r1,a
 	mov	a,r0
-	add	a,#_UART0_printNum_dis_65536_31
+	add	a, #_UART0_printNum_dis_10000_36
 	mov	dpl,a
 	mov	a,r1
-	addc	a,#(_UART0_printNum_dis_65536_31 >> 8)
+	addc	a, #(_UART0_printNum_dis_10000_36 >> 8)
 	mov	dph,a
 	mov	r1,_UART0_printNum_sloc1_1_0
 	mov	a,#0x37
-	add	a,r1
-	mov	r1,a
+	add	a, r1
 	movx	@dptr,a
 	sjmp	00108$
 00107$:
-;	./src/N76_uart0.c:65: dis[max] = num % base + 48;
+;	./src/N76_uart0.c:70: dis[max] = num % base + 48;
 	mov	a,r3
 	mov	r0,a
 	rlc	a
 	subb	a,acc
 	mov	r1,a
 	mov	a,r0
-	add	a,#_UART0_printNum_dis_65536_31
+	add	a, #_UART0_printNum_dis_10000_36
 	mov	dpl,a
 	mov	a,r1
-	addc	a,#(_UART0_printNum_dis_65536_31 >> 8)
+	addc	a, #(_UART0_printNum_dis_10000_36 >> 8)
 	mov	dph,a
 	mov	r1,_UART0_printNum_sloc1_1_0
 	mov	a,#0x30
-	add	a,r1
-	mov	r1,a
+	add	a, r1
 	movx	@dptr,a
 00108$:
-;	./src/N76_uart0.c:67: num = num / base;
+;	./src/N76_uart0.c:72: num = num / base;
 	mov	__divslong_PARM_2,_UART0_printNum_sloc0_1_0
 	mov	(__divslong_PARM_2 + 1),(_UART0_printNum_sloc0_1_0 + 1)
 	mov	(__divslong_PARM_2 + 2),(_UART0_printNum_sloc0_1_0 + 2)
 	mov	(__divslong_PARM_2 + 3),(_UART0_printNum_sloc0_1_0 + 3)
-	mov	dpl,r4
-	mov	dph,r5
-	mov	b,r6
-	mov	a,r7
+;	./src/N76_uart0.c:73: max++;
+	mov	dpl, r4
+	mov	dph, r5
+	mov	b, r6
+	mov	a, r7
 	push	ar3
 	push	ar2
 	lcall	__divslong
-	mov	r4,dpl
-	mov	r5,dph
-	mov	r6,b
-	mov	r7,a
+	mov	r4, dpl
+	mov	r5, dph
+	mov	r6, b
+	mov	r7, a
 	pop	ar2
 	pop	ar3
-;	./src/N76_uart0.c:68: max++;
 	inc	r3
 	ljmp	00109$
 00138$:
 	mov	ar7,r3
-;	./src/N76_uart0.c:71: if (base == HEX) // add 0x for HEX and 0B for BIN
+;	./src/N76_uart0.c:76: if (base == HEX) // add 0x for HEX and 0B for BIN
 	mov	a,#0x10
 	cjne	a,_UART0_printNum_PARM_2,00117$
-;	./src/N76_uart0.c:73: if (max % 2 == 1)
+;	./src/N76_uart0.c:78: if (max % 2 == 1)
 	mov	a,r3
 	mov	r5,a
 	rlc	a
@@ -705,16 +718,16 @@ _UART0_printNum:
 	mov	r6,a
 	mov	__modsint_PARM_2,#0x02
 	mov	(__modsint_PARM_2 + 1),#0x00
-	mov	dpl,r5
-	mov	dph,r6
+	mov	dpl, r5
+	mov	dph, r6
 	push	ar7
 	push	ar6
 	push	ar5
 	push	ar3
 	push	ar2
 	lcall	__modsint
-	mov	r1,dpl
-	mov	r4,dph
+	mov	r1, dpl
+	mov	r4, dph
 	pop	ar2
 	pop	ar3
 	pop	ar5
@@ -722,20 +735,20 @@ _UART0_printNum:
 	pop	ar7
 	cjne	r1,#0x01,00113$
 	cjne	r4,#0x00,00113$
-;	./src/N76_uart0.c:74: dis[max++] = '0';
+;	./src/N76_uart0.c:79: dis[max++] = '0';
 	mov	a,r3
 	inc	a
 	mov	r7,a
 	mov	a,r5
-	add	a,#_UART0_printNum_dis_65536_31
+	add	a, #_UART0_printNum_dis_10000_36
 	mov	dpl,a
 	mov	a,r6
-	addc	a,#(_UART0_printNum_dis_65536_31 >> 8)
+	addc	a, #(_UART0_printNum_dis_10000_36 >> 8)
 	mov	dph,a
 	mov	a,#0x30
 	movx	@dptr,a
 00113$:
-;	./src/N76_uart0.c:76: dis[max++] = 'x';
+;	./src/N76_uart0.c:81: dis[max++] = 'x';
 	mov	a,r7
 	mov	r6,a
 	inc	a
@@ -745,14 +758,14 @@ _UART0_printNum:
 	subb	a,acc
 	mov	r4,a
 	mov	a,r6
-	add	a,#_UART0_printNum_dis_65536_31
+	add	a, #_UART0_printNum_dis_10000_36
 	mov	dpl,a
 	mov	a,r4
-	addc	a,#(_UART0_printNum_dis_65536_31 >> 8)
+	addc	a, #(_UART0_printNum_dis_10000_36 >> 8)
 	mov	dph,a
 	mov	a,#0x78
 	movx	@dptr,a
-;	./src/N76_uart0.c:77: dis[max++] = '0';
+;	./src/N76_uart0.c:82: dis[max++] = '0';
 	mov	a,r5
 	mov	r6,a
 	inc	a
@@ -762,55 +775,35 @@ _UART0_printNum:
 	subb	a,acc
 	mov	r5,a
 	mov	a,r6
-	add	a,#_UART0_printNum_dis_65536_31
+	add	a, #_UART0_printNum_dis_10000_36
 	mov	dpl,a
 	mov	a,r5
-	addc	a,#(_UART0_printNum_dis_65536_31 >> 8)
+	addc	a, #(_UART0_printNum_dis_10000_36 >> 8)
 	mov	dph,a
 	mov	a,#0x30
 	movx	@dptr,a
 	sjmp	00118$
 00117$:
-;	./src/N76_uart0.c:79: else if (base == BIN)
+;	./src/N76_uart0.c:84: else if (base == BIN)
 	mov	a,#0x02
 	cjne	a,_UART0_printNum_PARM_2,00118$
-;	./src/N76_uart0.c:81: dis[max++] = 'B';
+;	./src/N76_uart0.c:86: dis[max++] = 'B';
 	mov	a,r3
 	inc	a
-	mov	r6,a
+	mov	r7,a
 	mov	a,r3
 	rlc	a
 	subb	a,acc
-	mov	r5,a
+	mov	r6,a
 	mov	a,r3
-	add	a,#_UART0_printNum_dis_65536_31
+	add	a, #_UART0_printNum_dis_10000_36
 	mov	dpl,a
-	mov	a,r5
-	addc	a,#(_UART0_printNum_dis_65536_31 >> 8)
+	mov	a,r6
+	addc	a, #(_UART0_printNum_dis_10000_36 >> 8)
 	mov	dph,a
 	mov	a,#0x42
 	movx	@dptr,a
-;	./src/N76_uart0.c:82: dis[max++] = '0';
-	mov	a,r6
-	mov	r5,a
-	inc	a
-	mov	r7,a
-	mov	a,r5
-	rlc	a
-	subb	a,acc
-	mov	r6,a
-	mov	a,r5
-	add	a,#_UART0_printNum_dis_65536_31
-	mov	dpl,a
-	mov	a,r6
-	addc	a,#(_UART0_printNum_dis_65536_31 >> 8)
-	mov	dph,a
-	mov	a,#0x30
-	movx	@dptr,a
-00118$:
-;	./src/N76_uart0.c:85: if (flag == 1) // add minus to negative number
-	cjne	r2,#0x01,00137$
-;	./src/N76_uart0.c:86: dis[max++] = '-';
+;	./src/N76_uart0.c:87: dis[max++] = '0';
 	mov	ar6,r7
 	inc	r7
 	mov	a,r6
@@ -818,19 +811,37 @@ _UART0_printNum:
 	subb	a,acc
 	mov	r5,a
 	mov	a,r6
-	add	a,#_UART0_printNum_dis_65536_31
+	add	a, #_UART0_printNum_dis_10000_36
 	mov	dpl,a
 	mov	a,r5
-	addc	a,#(_UART0_printNum_dis_65536_31 >> 8)
+	addc	a, #(_UART0_printNum_dis_10000_36 >> 8)
+	mov	dph,a
+	mov	a,#0x30
+	movx	@dptr,a
+00118$:
+;	./src/N76_uart0.c:90: if (flag == 1) // add minus to negative number
+	cjne	r2,#0x01,00137$
+;	./src/N76_uart0.c:91: dis[max++] = '-';
+	mov	ar6,r7
+	inc	r7
+	mov	a,r6
+	rlc	a
+	subb	a,acc
+	mov	r5,a
+	mov	a,r6
+	add	a, #_UART0_printNum_dis_10000_36
+	mov	dpl,a
+	mov	a,r5
+	addc	a, #(_UART0_printNum_dis_10000_36 >> 8)
 	mov	dph,a
 	mov	a,#0x2d
 	movx	@dptr,a
-;	./src/N76_uart0.c:88: for (uint8_t i = 0; i < max / 2; i++) // revert dis array
+;	./src/N76_uart0.c:93: for (uint8_t i = 0; i < max / 2; i++) // revert dis array
 00137$:
 	mov	a,r7
 	dec	a
 	mov	_UART0_printNum_sloc1_1_0,a
-	mov	_UART0_printNum_i_131072_37,#0x00
+	mov	_UART0_printNum_i_20000_42,#0x00
 00123$:
 	mov	a,r7
 	mov	r3,a
@@ -839,18 +850,18 @@ _UART0_printNum:
 	mov	r4,a
 	mov	__divsint_PARM_2,#0x02
 	mov	(__divsint_PARM_2 + 1),#0x00
-	mov	dpl,r3
-	mov	dph,r4
+	mov	dpl, r3
+	mov	dph, r4
 	push	ar7
 	push	ar4
 	push	ar3
 	lcall	__divsint
-	mov	r1,dpl
-	mov	r2,dph
+	mov	r1, dpl
+	mov	r2, dph
 	pop	ar3
 	pop	ar4
 	pop	ar7
-	mov	r0,_UART0_printNum_i_131072_37
+	mov	r0,_UART0_printNum_i_20000_42
 	mov	r5,#0x00
 	clr	c
 	mov	a,r0
@@ -861,72 +872,72 @@ _UART0_printNum:
 	xrl	b,#0x80
 	subb	a,b
 	jnc	00121$
-;	./src/N76_uart0.c:90: dis[max] = dis[i];
+;	./src/N76_uart0.c:95: dis[max] = dis[i];
 	push	ar7
 	mov	a,r3
-	add	a,#_UART0_printNum_dis_65536_31
+	add	a, #_UART0_printNum_dis_10000_36
 	mov	r2,a
 	mov	a,r4
-	addc	a,#(_UART0_printNum_dis_65536_31 >> 8)
+	addc	a, #(_UART0_printNum_dis_10000_36 >> 8)
 	mov	r5,a
-	mov	a,_UART0_printNum_i_131072_37
-	add	a,#_UART0_printNum_dis_65536_31
+	mov	a,_UART0_printNum_i_20000_42
+	add	a, #_UART0_printNum_dis_10000_36
 	mov	r0,a
 	clr	a
-	addc	a,#(_UART0_printNum_dis_65536_31 >> 8)
+	addc	a, #(_UART0_printNum_dis_10000_36 >> 8)
 	mov	r1,a
 	mov	dpl,r0
 	mov	dph,r1
 	movx	a,@dptr
-	mov	r7,a
 	mov	dpl,r2
 	mov	dph,r5
 	movx	@dptr,a
-;	./src/N76_uart0.c:91: dis[i] = dis[max - 1 - i];
-	mov	r5,_UART0_printNum_i_131072_37
+;	./src/N76_uart0.c:96: dis[i] = dis[max - 1 - i];
+	mov	r7,_UART0_printNum_i_20000_42
 	mov	a,_UART0_printNum_sloc1_1_0
 	clr	c
-	subb	a,r5
-	mov	r5,a
+	subb	a,r7
+	mov	r6,a
 	rlc	a
 	subb	a,acc
-	mov	r2,a
-	mov	a,r5
-	add	a,#_UART0_printNum_dis_65536_31
-	mov	r5,a
-	mov	a,r2
-	addc	a,#(_UART0_printNum_dis_65536_31 >> 8)
-	mov	r2,a
-	mov	dpl,r5
-	mov	dph,r2
+	mov	r7,a
+	mov	a,r6
+	add	a, #_UART0_printNum_dis_10000_36
+	mov	_UART0_printNum_sloc0_1_0,a
+	mov	a,r7
+	addc	a, #(_UART0_printNum_dis_10000_36 >> 8)
+	mov	(_UART0_printNum_sloc0_1_0 + 1),a
+	mov	dpl,_UART0_printNum_sloc0_1_0
+	mov	dph,(_UART0_printNum_sloc0_1_0 + 1)
 	movx	a,@dptr
-	mov	r6,a
 	mov	dpl,r0
 	mov	dph,r1
 	movx	@dptr,a
-;	./src/N76_uart0.c:92: dis[max - 1 - i] = dis[max];
-	mov	dpl,r5
-	mov	dph,r2
-	mov	a,r7
+;	./src/N76_uart0.c:97: dis[max - 1 - i] = dis[max];
+	mov	dpl,r2
+	mov	dph,r5
+	movx	a,@dptr
+	mov	dpl,_UART0_printNum_sloc0_1_0
+	mov	dph,(_UART0_printNum_sloc0_1_0 + 1)
 	movx	@dptr,a
-;	./src/N76_uart0.c:88: for (uint8_t i = 0; i < max / 2; i++) // revert dis array
-	inc	_UART0_printNum_i_131072_37
+;	./src/N76_uart0.c:93: for (uint8_t i = 0; i < max / 2; i++) // revert dis array
+	inc	_UART0_printNum_i_20000_42
 	pop	ar7
-	sjmp	00123$
+	ljmp	00123$
 00121$:
-;	./src/N76_uart0.c:94: dis[max] = '\0';  // end string character
+;	./src/N76_uart0.c:99: dis[max] = '\0';  // end string character
 	mov	a,r3
-	add	a,#_UART0_printNum_dis_65536_31
+	add	a, #_UART0_printNum_dis_10000_36
 	mov	dpl,a
 	mov	a,r4
-	addc	a,#(_UART0_printNum_dis_65536_31 >> 8)
+	addc	a, #(_UART0_printNum_dis_10000_36 >> 8)
 	mov	dph,a
 	clr	a
 	movx	@dptr,a
-;	./src/N76_uart0.c:95: UART0_print(dis); // print dis
-	mov	dptr,#_UART0_printNum_dis_65536_31
-	mov	b,#0x00
-;	./src/N76_uart0.c:96: }
+;	./src/N76_uart0.c:100: UART0_print(dis); // print dis
+	mov	dptr,#_UART0_printNum_dis_10000_36
+	mov	b,a
+;	./src/N76_uart0.c:101: }
 	ljmp	_UART0_print
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'UART0_printNumln'
@@ -934,7 +945,7 @@ _UART0_printNum:
 ;base                      Allocated with name '_UART0_printNumln_PARM_2'
 ;num                       Allocated to registers r4 r5 r6 r7 
 ;------------------------------------------------------------
-;	./src/N76_uart0.c:98: void UART0_printNumln(long num, uint8_t base)
+;	./src/N76_uart0.c:103: void UART0_printNumln(long num, uint8_t base)
 ;	-----------------------------------------
 ;	 function UART0_printNumln
 ;	-----------------------------------------
@@ -943,18 +954,196 @@ _UART0_printNumln:
 	mov	r5,dph
 	mov	r6,b
 	mov	r7,a
-;	./src/N76_uart0.c:100: UART0_printNum(num, base);
+;	./src/N76_uart0.c:105: UART0_printNum(num, base);
 	mov	_UART0_printNum_PARM_2,_UART0_printNumln_PARM_2
-	mov	dpl,r4
-	mov	dph,r5
-	mov	b,r6
-	mov	a,r7
+	mov	dpl, r4
+	mov	dph, r5
+	mov	b, r6
+	mov	a, r7
 	lcall	_UART0_printNum
-;	./src/N76_uart0.c:101: UART0_println("");
+;	./src/N76_uart0.c:106: UART0_println("");
 	mov	dptr,#___str_1
-	mov	b,#0x80
-;	./src/N76_uart0.c:102: }
+	mov	b, #0x80
+;	./src/N76_uart0.c:107: }
 	ljmp	_UART0_println
+;------------------------------------------------------------
+;Allocation info for local variables in function 'UART0_available'
+;------------------------------------------------------------
+;	./src/N76_uart0.c:109: int UART0_available(void)
+;	-----------------------------------------
+;	 function UART0_available
+;	-----------------------------------------
+_UART0_available:
+;	./src/N76_uart0.c:111: return ((unsigned int)(SERIAL_RX_BUFFER_SIZE + _rx_buffer_head - _rx_buffer_tail)) % SERIAL_RX_BUFFER_SIZE;
+	mov	dptr,#__rx_buffer_head
+	movx	a,@dptr
+	mov	r7,a
+	mov	r6,#0x00
+	mov	a,#0x10
+	add	a, r7
+	mov	r7,a
+	clr	a
+	addc	a, r6
+	mov	r6,a
+	mov	dptr,#__rx_buffer_tail
+	movx	a,@dptr
+	mov	r5,a
+	mov	r4,#0x00
+	mov	a,r7
+	clr	c
+	subb	a,r5
+	mov	r7,a
+	mov	a,r6
+	subb	a,r4
+	mov	a,#0x0f
+	anl	a,r7
+	mov	dpl,a
+	mov	dph,#0x00
+;	./src/N76_uart0.c:112: }
+	ret
+;------------------------------------------------------------
+;Allocation info for local variables in function 'UART0_read'
+;------------------------------------------------------------
+;c                         Allocated to registers r7 
+;------------------------------------------------------------
+;	./src/N76_uart0.c:114: int UART0_read(void)
+;	-----------------------------------------
+;	 function UART0_read
+;	-----------------------------------------
+_UART0_read:
+;	./src/N76_uart0.c:117: if (_rx_buffer_head == _rx_buffer_tail)
+	mov	dptr,#__rx_buffer_head
+	movx	a,@dptr
+	mov	r7,a
+	mov	dptr,#__rx_buffer_tail
+	movx	a,@dptr
+	mov	r6,a
+	mov	a,r7
+	cjne	a,ar6,00102$
+;	./src/N76_uart0.c:119: return -1;
+	mov	dptr,#0xffff
+	ret
+00102$:
+;	./src/N76_uart0.c:123: uint8_t c = _rx_buffer[_rx_buffer_tail];
+	mov	a,r6
+	add	a, #__rx_buffer
+	mov	dpl,a
+	clr	a
+	addc	a, #(__rx_buffer >> 8)
+	mov	dph,a
+	movx	a,@dptr
+	mov	r7,a
+;	./src/N76_uart0.c:124: _rx_buffer_tail = (uint8_t)(_rx_buffer_tail + 1) % SERIAL_RX_BUFFER_SIZE;
+	inc	r6
+	anl	ar6,#0x0f
+	mov	dptr,#__rx_buffer_tail
+	mov	a,r6
+	movx	@dptr,a
+;	./src/N76_uart0.c:125: return c;
+	mov	r6,#0x00
+	mov	dpl, r7
+	mov	dph, r6
+;	./src/N76_uart0.c:127: }
+	ret
+;------------------------------------------------------------
+;Allocation info for local variables in function 'UART0_attachInterrupt'
+;------------------------------------------------------------
+;	./src/N76_uart0.c:129: void UART0_attachInterrupt(void)
+;	-----------------------------------------
+;	 function UART0_attachInterrupt
+;	-----------------------------------------
+_UART0_attachInterrupt:
+;	./src/N76_uart0.c:131: set_REN;
+	orl	_scon,#0x10
+;	./src/N76_uart0.c:132: set_ES; // enable UART0 interrupt
+	orl	_ie,#0x10
+;	./src/N76_uart0.c:133: }
+	ret
+;------------------------------------------------------------
+;Allocation info for local variables in function 'UART0_detachInterrupt'
+;------------------------------------------------------------
+;	./src/N76_uart0.c:135: void UART0_detachInterrupt(void)
+;	-----------------------------------------
+;	 function UART0_detachInterrupt
+;	-----------------------------------------
+_UART0_detachInterrupt:
+;	./src/N76_uart0.c:137: clr_REN;
+	anl	_scon,#0xef
+;	./src/N76_uart0.c:138: clr_ES; // disable UART0 interrupt
+	anl	_ie,#0xef
+;	./src/N76_uart0.c:139: }
+	ret
+;------------------------------------------------------------
+;Allocation info for local variables in function 'UART0_INT_FUCTION'
+;------------------------------------------------------------
+;c                         Allocated to registers r7 
+;i                         Allocated to registers r4 
+;------------------------------------------------------------
+;	./src/N76_uart0.c:141: ISR(UART0_INT_FUCTION, INTERRUPT_UART0)
+;	-----------------------------------------
+;	 function UART0_INT_FUCTION
+;	-----------------------------------------
+_UART0_INT_FUCTION:
+	push	acc
+	push	dpl
+	push	dph
+	push	ar7
+	push	ar6
+	push	ar5
+	push	ar4
+	push	psw
+	mov	psw,#0x00
+;	./src/N76_uart0.c:143: if (SCON & 0x01 != 0x00) // check if SCON, RI == 1
+	mov	a,_scon
+	jnb	acc.0,00105$
+;	./src/N76_uart0.c:145: clr_RI;              /* clear reception flag for next reception */
+	anl	_scon,#0xfe
+;	./src/N76_uart0.c:147: uint8_t c = SBUF;
+	mov	r7,_sbuf
+;	./src/N76_uart0.c:148: uint8_t i = (unsigned int)(_rx_buffer_head + 1) % SERIAL_RX_BUFFER_SIZE;
+	mov	dptr,#__rx_buffer_head
+	movx	a,@dptr
+	mov	r6,a
+	mov	r4,a
+	mov	r5,#0x00
+	inc	r4
+	cjne	r4,#0x00,00120$
+	inc	r5
+00120$:
+	anl	ar4,#0x0f
+;	./src/N76_uart0.c:154: if (i != _rx_buffer_tail)
+	mov	dptr,#__rx_buffer_tail
+	movx	a,@dptr
+	mov	r5,a
+	mov	a,r4
+	cjne	a,ar5,00121$
+	sjmp	00105$
+00121$:
+;	./src/N76_uart0.c:156: _rx_buffer[_rx_buffer_head] = c;
+	mov	a,r6
+	add	a, #__rx_buffer
+	mov	dpl,a
+	clr	a
+	addc	a, #(__rx_buffer >> 8)
+	mov	dph,a
+	mov	a,r7
+	movx	@dptr,a
+;	./src/N76_uart0.c:157: _rx_buffer_head = i;
+	mov	dptr,#__rx_buffer_head
+	mov	a,r4
+	movx	@dptr,a
+00105$:
+;	./src/N76_uart0.c:160: }
+	pop	psw
+	pop	ar4
+	pop	ar5
+	pop	ar6
+	pop	ar7
+	pop	dph
+	pop	dpl
+	pop	acc
+	reti
+;	eliminated unneeded push/pop b
 	.area CSEG    (CODE)
 	.area CONST   (CODE)
 	.area CONST   (CODE)

@@ -29,7 +29,7 @@ void main(void)
             ;
         value = (ADCRH << 4) | ADCRL;
         _delay_ms(500);
-        UART0_printNum(value);
+        UART0_printNum(value, DEC);
         UART0_print("\r\n");
     }
     while (0)
@@ -37,7 +37,7 @@ void main(void)
         // convert ADC using interrupt
         set_ADCS; // start ADC convertion
         _delay_ms(500);
-        UART0_printNum(value);
+        UART0_printNum(value, DEC);
         UART0_print("\r\n");
     }
 }

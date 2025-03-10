@@ -1,6 +1,6 @@
 ;--------------------------------------------------------
-; File Created by SDCC : free open source ANSI-C Compiler
-; Version 4.2.0 #13081 (Linux)
+; File Created by SDCC : free open source ISO C Compiler 
+; Version 4.4.0 #14620 (Linux)
 ;--------------------------------------------------------
 	.module N76_I2C
 	.optsdcc -mmcs51 --model-small
@@ -345,7 +345,7 @@ _I2C_requestFrom_PARM_2:
 ;--------------------------------------------------------
 	.area PSEG    (PAG,XDATA)
 ;--------------------------------------------------------
-; external ram data
+; uninitialized external ram data
 ;--------------------------------------------------------
 	.area XSEG    (XDATA)
 _rxBufferIndex::
@@ -365,7 +365,7 @@ _txBuffer::
 ;--------------------------------------------------------
 	.area XABS    (ABS,XDATA)
 ;--------------------------------------------------------
-; external initialized ram data
+; initialized external ram data
 ;--------------------------------------------------------
 	.area XISEG   (XDATA)
 _t::
@@ -399,7 +399,7 @@ _t::
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'timeOut'
 ;------------------------------------------------------------
-;	./src/N76_I2C.c:20: uint8_t timeOut(void)
+;	./src/N76_I2C.c:20: uint8_x timeOut(void)
 ;	-----------------------------------------
 ;	 function timeOut
 ;	-----------------------------------------
@@ -413,30 +413,30 @@ _timeOut:
 	ar1 = 0x01
 	ar0 = 0x00
 ;	./src/N76_I2C.c:22: _delay_us(100);
-	mov	dptr,#(0x64&0x00ff)
+	mov	dptr,#0x0064
 	clr	a
 	mov	b,a
 	lcall	__delay_us
 ;	./src/N76_I2C.c:23: if (++t > 10)
 	mov	dptr,#_t
 	movx	a,@dptr
-	add	a,#0x01
+	add	a, #0x01
 	movx	@dptr,a
 	movx	a,@dptr
 	add	a,#0xff - 0x0a
 	jnc	00102$
 ;	./src/N76_I2C.c:24: return 1;
-	mov	dpl,#0x01
+	mov	dpl, #0x01
 	ret
 00102$:
 ;	./src/N76_I2C.c:25: return 0;
-	mov	dpl,#0x00
+	mov	dpl, #0x00
 ;	./src/N76_I2C.c:26: }
 	ret
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'I2C_begin'
 ;------------------------------------------------------------
-;	./src/N76_I2C.c:28: void I2C_begin()
+;	./src/N76_I2C.c:28: void I2C_begin(void)
 ;	-----------------------------------------
 ;	 function I2C_begin
 ;	-----------------------------------------
@@ -463,7 +463,7 @@ _I2C_begin:
 ;	 function I2C_beginTransmission
 ;	-----------------------------------------
 _I2C_beginTransmission:
-	mov	r7,dpl
+	mov	r7, dpl
 ;	./src/N76_I2C.c:42: txBufferIndex = 0;
 	mov	dptr,#_txBufferIndex
 	clr	a
@@ -486,16 +486,15 @@ _I2C_beginTransmission:
 	swap	a
 	rl	a
 	anl	a,#0x1f
-	mov	r6,a
 	jnz	00105$
 ;	./src/N76_I2C.c:58: if (timeOut())
 	push	ar7
 	lcall	_timeOut
-	mov	a,dpl
+	mov	a, dpl
 	pop	ar7
 	jz	00103$
 ;	./src/N76_I2C.c:59: return 2;
-	mov	dpl,#0x02
+	mov	dpl, #0x02
 	ret
 00105$:
 ;	./src/N76_I2C.c:63: I2DAT = (addr << 1) | I2C_WRITE;
@@ -520,14 +519,14 @@ _I2C_beginTransmission:
 	jnz	00110$
 ;	./src/N76_I2C.c:70: if (timeOut())
 	lcall	_timeOut
-	mov	a,dpl
+	mov	a, dpl
 	jz	00108$
 ;	./src/N76_I2C.c:71: return 3;
-	mov	dpl,#0x03
+	mov	dpl, #0x03
 	ret
 00110$:
 ;	./src/N76_I2C.c:73: return 0;
-	mov	dpl,#0x00
+	mov	dpl, #0x00
 ;	./src/N76_I2C.c:74: }
 	ret
 ;------------------------------------------------------------
@@ -540,7 +539,7 @@ _I2C_beginTransmission:
 ;	 function I2C_write
 ;	-----------------------------------------
 _I2C_write:
-	mov	r7,dpl
+	mov	r7, dpl
 ;	./src/N76_I2C.c:78: txBuffer[txBufferIndex++] = data;
 	mov	dptr,#_txBufferIndex
 	movx	a,@dptr
@@ -548,10 +547,10 @@ _I2C_write:
 	inc	a
 	movx	@dptr,a
 	mov	a,r6
-	add	a,#_txBuffer
+	add	a, #_txBuffer
 	mov	dpl,a
 	clr	a
-	addc	a,#(_txBuffer >> 8)
+	addc	a, #(_txBuffer >> 8)
 	mov	dph,a
 	mov	a,r7
 	movx	@dptr,a
@@ -574,9 +573,9 @@ _I2C_write:
 ;	 function I2C_writeBuffer
 ;	-----------------------------------------
 _I2C_writeBuffer:
-	mov	r5,dpl
-	mov	r6,dph
-	mov	r7,b
+	mov	r5, dpl
+	mov	r6, dph
+	mov	r7, b
 ;	./src/N76_I2C.c:84: uint8_t i = 0;
 	mov	r4,#0x00
 00103$:
@@ -587,10 +586,10 @@ _I2C_writeBuffer:
 	jnc	00105$
 ;	./src/N76_I2C.c:87: I2C_write(data[i]);
 	mov	a,r4
-	add	a,r5
+	add	a, r5
 	mov	r1,a
 	clr	a
-	addc	a,r6
+	addc	a, r6
 	mov	r2,a
 	mov	ar3,r7
 	mov	dpl,r1
@@ -635,10 +634,10 @@ _I2C_endTransmission:
 	jnc	00106$
 ;	./src/N76_I2C.c:98: I2DAT = txBuffer[i];
 	mov	a,r7
-	add	a,#_txBuffer
+	add	a, #_txBuffer
 	mov	dpl,a
 	clr	a
-	addc	a,#(_txBuffer >> 8)
+	addc	a, #(_txBuffer >> 8)
 	mov	dph,a
 	movx	a,@dptr
 	mov	_i2dat,a
@@ -657,16 +656,15 @@ _I2C_endTransmission:
 	swap	a
 	rl	a
 	anl	a,#0x1f
-	mov	r6,a
 	jnz	00114$
 ;	./src/N76_I2C.c:105: if (timeOut())
 	push	ar7
 	lcall	_timeOut
-	mov	a,dpl
+	mov	a, dpl
 	pop	ar7
 	jz	00103$
 ;	./src/N76_I2C.c:106: return 1;
-	mov	dpl,#0x01
+	mov	dpl, #0x01
 	ret
 00114$:
 ;	./src/N76_I2C.c:95: for (i = 0; i < txBufferLength; ++i)
@@ -691,14 +689,14 @@ _I2C_endTransmission:
 	cjne	r7,#0x01,00111$
 ;	./src/N76_I2C.c:116: if (timeOut())
 	lcall	_timeOut
-	mov	a,dpl
+	mov	a, dpl
 	jz	00109$
 ;	./src/N76_I2C.c:117: return 3;
-	mov	dpl,#0x03
+	mov	dpl, #0x03
 	ret
 00111$:
 ;	./src/N76_I2C.c:123: return 0;
-	mov	dpl,#0x00
+	mov	dpl, #0x00
 ;	./src/N76_I2C.c:124: }
 	ret
 ;------------------------------------------------------------
@@ -713,7 +711,7 @@ _I2C_endTransmission:
 ;	 function I2C_requestFrom
 ;	-----------------------------------------
 _I2C_requestFrom:
-	mov	r7,dpl
+	mov	r7, dpl
 ;	./src/N76_I2C.c:129: rxBufferLength = len;
 	mov	dptr,#_rxBufferLength
 	mov	a,_I2C_requestFrom_PARM_2
@@ -737,16 +735,15 @@ _I2C_requestFrom:
 	swap	a
 	rl	a
 	anl	a,#0x1f
-	mov	r6,a
 	jnz	00105$
 ;	./src/N76_I2C.c:145: if (timeOut())
 	push	ar7
 	lcall	_timeOut
-	mov	a,dpl
+	mov	a, dpl
 	pop	ar7
 	jz	00103$
 ;	./src/N76_I2C.c:146: return 2;
-	mov	dpl,#0x02
+	mov	dpl, #0x02
 	ret
 00105$:
 ;	./src/N76_I2C.c:149: I2DAT = (addr << 1) | I2C_READ;
@@ -774,10 +771,10 @@ _I2C_requestFrom:
 	jnz	00142$
 ;	./src/N76_I2C.c:156: if (timeOut())
 	lcall	_timeOut
-	mov	a,dpl
+	mov	a, dpl
 	jz	00108$
 ;	./src/N76_I2C.c:157: return 3;
-	mov	dpl,#0x03
+	mov	dpl, #0x03
 	ret
 ;	./src/N76_I2C.c:160: for (i = 0; i < rxBufferLength - 1; i++)
 00142$:
@@ -788,9 +785,9 @@ _I2C_requestFrom:
 	mov	r6,a
 	mov	r5,#0x00
 	dec	r6
-	cjne	r6,#0xff,00204$
+	cjne	r6,#0xff,00238$
 	dec	r5
-00204$:
+00238$:
 	mov	ar3,r7
 	mov	r4,#0x00
 	clr	c
@@ -817,24 +814,23 @@ _I2C_requestFrom:
 	swap	a
 	rl	a
 	anl	a,#0x1f
-	mov	r6,a
 	jnz	00115$
 ;	./src/N76_I2C.c:168: if (timeOut())
 	push	ar7
 	lcall	_timeOut
-	mov	a,dpl
+	mov	a, dpl
 	pop	ar7
 	jz	00113$
 ;	./src/N76_I2C.c:169: return 4;
-	mov	dpl,#0x04
+	mov	dpl, #0x04
 	ret
 00115$:
 ;	./src/N76_I2C.c:171: rxBuffer[i] = I2DAT;
 	mov	a,r7
-	add	a,#_rxBuffer
+	add	a, #_rxBuffer
 	mov	dpl,a
 	clr	a
-	addc	a,#(_rxBuffer >> 8)
+	addc	a, #(_rxBuffer >> 8)
 	mov	dph,a
 	mov	a,_i2dat
 	movx	@dptr,a
@@ -860,10 +856,10 @@ _I2C_requestFrom:
 	jnz	00121$
 ;	./src/N76_I2C.c:180: if (timeOut())
 	lcall	_timeOut
-	mov	a,dpl
+	mov	a, dpl
 	jz	00119$
 ;	./src/N76_I2C.c:181: return 5;
-	mov	dpl,#0x05
+	mov	dpl, #0x05
 	ret
 00121$:
 ;	./src/N76_I2C.c:182: rxBuffer[rxBufferLength - 1] = I2DAT;
@@ -876,10 +872,10 @@ _I2C_requestFrom:
 	subb	a,acc
 	mov	r6,a
 	mov	a,r7
-	add	a,#_rxBuffer
+	add	a, #_rxBuffer
 	mov	dpl,a
 	mov	a,r6
-	addc	a,#(_rxBuffer >> 8)
+	addc	a, #(_rxBuffer >> 8)
 	mov	dph,a
 	mov	a,_i2dat
 	movx	@dptr,a
@@ -901,14 +897,14 @@ _I2C_requestFrom:
 	cjne	r7,#0x01,00126$
 ;	./src/N76_I2C.c:191: if (timeOut())
 	lcall	_timeOut
-	mov	a,dpl
+	mov	a, dpl
 	jz	00124$
 ;	./src/N76_I2C.c:192: return 6;
-	mov	dpl,#0x06
+	mov	dpl, #0x06
 	ret
 00126$:
 ;	./src/N76_I2C.c:197: return 0;
-	mov	dpl,#0x00
+	mov	dpl, #0x00
 ;	./src/N76_I2C.c:198: }
 	ret
 ;------------------------------------------------------------
@@ -936,10 +932,10 @@ _I2C_read:
 	jnc	00102$
 ;	./src/N76_I2C.c:206: value = rxBuffer[rxBufferIndex];
 	mov	a,r6
-	add	a,#_rxBuffer
+	add	a, #_rxBuffer
 	mov	dpl,a
 	clr	a
-	addc	a,#(_rxBuffer >> 8)
+	addc	a, #(_rxBuffer >> 8)
 	mov	dph,a
 	movx	a,@dptr
 	mov	r7,a
@@ -950,13 +946,13 @@ _I2C_read:
 	movx	@dptr,a
 00102$:
 ;	./src/N76_I2C.c:209: return value;
-	mov	dpl,r7
+	mov	dpl, r7
 ;	./src/N76_I2C.c:210: }
 	ret
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'I2C_available'
 ;------------------------------------------------------------
-;	./src/N76_I2C.c:212: int16_t I2C_available()
+;	./src/N76_I2C.c:212: int16_t I2C_available(void)
 ;	-----------------------------------------
 ;	 function I2C_available
 ;	-----------------------------------------
